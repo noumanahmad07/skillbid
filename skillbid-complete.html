@@ -1,0 +1,2469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillBid — Live Talent Auctions Pakistan</title>
+<meta name="description" content="Pakistan's first live talent auction platform. Students post skills, businesses bid in real-time. Earn market rate for your work.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Epilogue:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --white:   #ffffff;
+  --off:     #f7f6f3;
+  --off2:    #f0ede8;
+  --border:  #e4e1db;
+  --border2: #d0cdc6;
+  --text:    #1a1916;
+  --text2:   #4a4845;
+  --muted:   #8a8680;
+  --dim:     #b8b4ae;
+
+  --indigo:        #3d52d5;
+  --indigo2:       #2f40b8;
+  --indigo-light:  #eef0fb;
+  --indigo-mid:    #c8cef4;
+
+  --emerald:       #1a9e6e;
+  --emerald-light: #e8f7f1;
+  --amber:         #d97706;
+  --amber-light:   #fef3e2;
+  --red:           #dc2626;
+  --red-light:     #fef2f2;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow:    0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --display: 'Syne', sans-serif;
+  --body:    'Epilogue', sans-serif;
+  --mono:    'JetBrains Mono', monospace;
+  --nav-h:   64px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--white); color: var(--text);
+  font-family: var(--body); line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--off); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+h1,h2,h3,h4,h5,h6 { font-family: var(--display); font-weight: 700; line-height: 1.15; color: var(--text); }
+p { color: var(--text2); }
+a { color: inherit; text-decoration: none; }
+button { font-family: var(--body); cursor: pointer; border: none; background: none; }
+input, textarea, select { font-family: var(--body); }
+
+.container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+.page-bg { min-height: 100vh; background: var(--off); padding: calc(var(--nav-h) + 28px) 0 60px; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 10px 22px; border-radius: var(--radius);
+  font-family: var(--body); font-size: 14px; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.18s; white-space: nowrap;
+  text-decoration: none; line-height: 1;
+}
+.btn-primary { background: var(--indigo); color: #fff; }
+.btn-primary:hover { background: var(--indigo2); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(61,82,213,0.3); }
+.btn-primary:active { transform: translateY(0); box-shadow: none; }
+.btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--border2); }
+.btn-outline:hover { border-color: var(--text); background: var(--off); }
+.btn-ghost { background: transparent; color: var(--text2); }
+.btn-ghost:hover { background: var(--off); color: var(--text); }
+.btn-success { background: var(--emerald); color: #fff; }
+.btn-success:hover { background: #157a56; }
+.btn-danger { background: var(--red); color: #fff; }
+.btn-danger:hover { background: #b91c1c; }
+.btn-lg { padding: 13px 30px; font-size: 15px; border-radius: var(--radius-lg); }
+.btn-sm { padding: 7px 15px; font-size: 13px; border-radius: var(--radius-sm); }
+.btn-xs { padding: 4px 10px; font-size: 12px; border-radius: var(--radius-sm); }
+.btn-icon { padding: 9px; border-radius: var(--radius-sm); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+.btn-block { width: 100%; }
+
+/* ── FORMS ── */
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.form-input {
+  width: 100%; padding: 11px 14px;
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: var(--radius); font-size: 14px; color: var(--text);
+  outline: none; transition: border-color 0.18s, box-shadow 0.18s;
+}
+.form-input:focus { border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(61,82,213,0.1); }
+.form-input::placeholder { color: var(--dim); }
+.form-input.error { border-color: var(--red); }
+textarea.form-input { resize: vertical; min-height: 90px; }
+.form-select {
+  width: 100%; padding: 11px 36px 11px 14px;
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: var(--radius); font-size: 14px; color: var(--text);
+  outline: none; cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238a8680' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+  transition: border-color 0.18s;
+}
+.form-select:focus { border-color: var(--indigo); outline: none; box-shadow: 0 0 0 3px rgba(61,82,213,0.1); }
+.form-hint  { font-size: 12px; color: var(--muted); margin-top: 5px; }
+.form-error { font-size: 12px; color: var(--red); margin-top: 5px; display: none; }
+.form-error.show { display: block; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media(max-width:560px){ .form-row { grid-template-columns: 1fr; } }
+.input-icon-wrap { position: relative; }
+.input-icon-wrap .form-input { padding-left: 40px; }
+.input-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 16px; pointer-events: none; }
+.input-action { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); cursor: pointer; font-size: 14px; }
+.input-action:hover { color: var(--text); }
+
+/* ── CARD ── */
+.card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
+.card-sm { padding: 16px; border-radius: var(--radius); }
+
+/* ── BADGE ── */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  letter-spacing: 0.2px; font-family: var(--mono);
+}
+.badge-indigo  { background: var(--indigo-light); color: var(--indigo); }
+.badge-emerald { background: var(--emerald-light); color: var(--emerald); }
+.badge-amber   { background: var(--amber-light); color: var(--amber); }
+.badge-red     { background: var(--red-light); color: var(--red); }
+.badge-gray    { background: var(--off2); color: var(--muted); border: 1px solid var(--border); }
+
+/* ── AVATAR ── */
+.avatar {
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-weight: 700; flex-shrink: 0; user-select: none;
+}
+.av-32 { width: 32px; height: 32px; font-size: 12px; }
+.av-40 { width: 40px; height: 40px; font-size: 14px; }
+.av-48 { width: 48px; height: 48px; font-size: 17px; }
+.av-64 { width: 64px; height: 64px; font-size: 22px; }
+.av-88 { width: 88px; height: 88px; font-size: 30px; }
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  height: var(--nav-h); background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+}
+.nav-inner {
+  width: 100%; max-width: 1160px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-logo { font-family: var(--display); font-size: 21px; font-weight: 800; color: var(--text); letter-spacing: -0.3px; flex-shrink: 0; margin-right: 16px; }
+.nav-logo span { color: var(--indigo); }
+.nav-links { display: flex; gap: 2px; flex: 1; }
+.nav-link {
+  padding: 7px 13px; border-radius: var(--radius-sm);
+  font-size: 14px; font-weight: 500; color: var(--text2);
+  transition: all 0.15s; cursor: pointer;
+  border: none; background: none;
+}
+.nav-link:hover { color: var(--text); background: var(--off); }
+.nav-link.active { color: var(--indigo); background: var(--indigo-light); font-weight: 600; }
+.nav-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+.nav-avatar-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; position: relative; }
+.nav-username { font-size: 14px; font-weight: 600; }
+.nav-dropdown {
+  position: absolute; top: calc(100% + 12px); right: 0;
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg); min-width: 200px; padding: 8px;
+  display: none; z-index: 100;
+}
+.nav-dropdown.open { display: block; }
+.nav-dd-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: var(--radius-sm);
+  font-size: 14px; color: var(--text2); cursor: pointer;
+  transition: all 0.15s; width: 100%; text-align: left;
+}
+.nav-dd-item:hover { background: var(--off); color: var(--text); }
+.nav-dd-item.danger { color: var(--red); }
+.nav-dd-item.danger:hover { background: var(--red-light); }
+.nav-dd-divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+/* ── LIVE PILL ── */
+.live-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--red-light); border: 1px solid #fecaca;
+  color: var(--red); font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px; font-family: var(--mono); letter-spacing: 0.5px;
+}
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); animation: ldot 1.4s ease-in-out infinite; }
+@keyframes ldot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(1.4)} }
+
+/* ── DIVIDER ── */
+.divider { height: 1px; background: var(--border); }
+.divider-text { text-align:center; position:relative; margin: 20px 0; }
+.divider-text::before { content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--border); }
+.divider-text span { position:relative; background:var(--white); padding:0 14px; font-size:13px; color:var(--muted); }
+
+/* ── TABS ── */
+.tabs-wrap { display: flex; gap: 2px; background: var(--off2); border-radius: var(--radius); padding: 4px; border: 1px solid var(--border); width: fit-content; }
+.tab-btn { padding: 7px 18px; border-radius: 7px; font-size: 13px; font-weight: 500; color: var(--muted); background: none; border: none; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.tab-btn.active { background: var(--white); color: var(--text); font-weight: 600; box-shadow: var(--shadow-sm); }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* ── AUCTION CARD ── */
+.auction-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+}
+.auction-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+.auction-card.ending { border-color: #fca5a5; }
+.auction-card.featured { border-color: var(--indigo-mid); }
+.ac-bar { height: 3px; background: var(--off2); }
+.ac-bar-fill { height: 100%; transition: width 1s linear; }
+.ac-bar-fill.green  { background: var(--emerald); }
+.ac-bar-fill.yellow { background: var(--amber); }
+.ac-bar-fill.red    { background: var(--red); }
+.ac-head { padding: 16px 18px 10px; display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.ac-student { display: flex; align-items: center; gap: 10px; }
+.ac-student-name { font-size: 14px; font-weight: 600; }
+.ac-student-school { font-size: 12px; color: var(--muted); }
+.ac-badges { display: flex; gap: 5px; flex-wrap: wrap; }
+.ac-body { padding: 0 18px 14px; flex: 1; }
+.ac-title { font-family: var(--display); font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+.ac-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
+.ac-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid var(--border); }
+.ac-stat { padding: 11px 0; text-align: center; }
+.ac-stat:not(:last-child) { border-right: 1px solid var(--border); }
+.ac-stat-val { font-family: var(--display); font-size: 16px; font-weight: 800; display: block; }
+.ac-stat-val.price { color: var(--indigo); }
+.ac-stat-val.t-green { color: var(--emerald); }
+.ac-stat-val.t-yellow { color: var(--amber); }
+.ac-stat-val.t-red { color: var(--red); }
+.ac-stat-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-family: var(--mono); margin-top: 2px; }
+.ac-foot { padding: 10px 18px; background: var(--off); border-top: 1px solid var(--border); display: flex; gap: 8px; }
+.ac-quick-input {
+  flex: 1; padding: 8px 12px; background: var(--white); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 13px; color: var(--text); font-family: var(--mono);
+  outline: none; transition: border-color 0.18s;
+}
+.ac-quick-input:focus { border-color: var(--indigo); }
+.ac-quick-input::placeholder { font-family: var(--body); color: var(--dim); }
+
+/* ── FEED ITEM ── */
+.feed-item { padding: 11px 14px; border-radius: var(--radius); background: var(--white); border: 1px solid var(--border); display: flex; gap: 10px; animation: feedIn 0.3s ease; }
+@keyframes feedIn { from{opacity:0;transform:translateY(-5px)} to{opacity:1;transform:translateY(0)} }
+.feed-icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+.fi-bid { background: var(--indigo-light); } .fi-win { background: var(--amber-light); } .fi-new { background: var(--emerald-light); }
+.feed-text { font-size: 13px; color: var(--text2); line-height: 1.5; }
+.feed-text b { color: var(--text); font-weight: 600; }
+.feed-time { font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 2px; }
+
+/* ── STAT CARD ── */
+.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 22px; }
+.stat-value { font-family: var(--display); font-size: 30px; font-weight: 800; color: var(--text); line-height: 1; }
+.stat-label { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.stat-delta { font-size: 12px; font-weight: 600; margin-top: 8px; font-family: var(--mono); }
+.stat-delta.up { color: var(--emerald); } .stat-delta.down { color: var(--red); }
+
+/* ── SECTION LABEL ── */
+.label { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--indigo); margin-bottom: 8px; }
+
+/* ── TOAST ── */
+#toast-stack { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.toast { background: var(--text); color: #fff; border-radius: var(--radius); padding: 12px 18px; font-size: 14px; max-width: 320px; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 10px; animation: toastIn 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+.toast.success { background: var(--emerald); }
+.toast.error { background: var(--red); }
+.toast.info { background: var(--indigo); }
+.toast.warning { background: var(--amber); color: #fff; }
+@keyframes toastIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+
+/* ── MODAL ── */
+.modal-bg { position: fixed; inset: 0; background: rgba(26,25,22,0.5); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.2s; backdrop-filter: blur(3px); }
+.modal-bg.open { opacity: 1; pointer-events: all; }
+.modal-box { background: var(--white); border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); width: 100%; overflow: hidden; transform: translateY(14px) scale(0.97); transition: transform 0.25s cubic-bezier(0.34,1.4,0.64,1); max-height: 90vh; overflow-y: auto; }
+.modal-bg.open .modal-box { transform: translateY(0) scale(1); }
+.modal-sm { max-width: 420px; } .modal-md { max-width: 560px; } .modal-lg { max-width: 720px; }
+.modal-head { padding: 22px 26px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; }
+.modal-title { font-family: var(--display); font-size: 20px; font-weight: 700; }
+.modal-subtitle { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.modal-x { width: 30px; height: 30px; border-radius: var(--radius-sm); background: var(--off); border: none; cursor: pointer; font-size: 18px; color: var(--muted); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.modal-x:hover { background: var(--off2); color: var(--text); }
+.modal-body { padding: 22px 26px; }
+.modal-foot { padding: 14px 26px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+
+/* ── RATING ── */
+.stars { color: var(--amber); font-size: 13px; letter-spacing: 1px; }
+
+/* ── SKILL CHIPS ── */
+.chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 12px; color: var(--muted); cursor: pointer; transition: all 0.15s; font-family: var(--mono); }
+.chip:hover { border-color: var(--indigo); color: var(--indigo); background: var(--indigo-light); }
+.chip.active { background: var(--indigo-light); border-color: var(--indigo); color: var(--indigo); font-weight: 600; }
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 60px 20px; }
+.empty-state-icon { font-size: 48px; margin-bottom: 16px; }
+.empty-state h3 { font-family: var(--display); font-size: 20px; margin-bottom: 8px; }
+.empty-state p { font-size: 14px; color: var(--muted); }
+
+/* ── TABLE ── */
+.table { width: 100%; border-collapse: collapse; }
+.table th { text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; padding: 10px 16px; border-bottom: 1px solid var(--border); font-family: var(--mono); }
+.table td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+.table tr:last-child td { border-bottom: none; }
+.table tbody tr:hover { background: var(--off); }
+
+/* ── PROGRESS BAR ── */
+.progress { height: 6px; background: var(--off2); border-radius: 3px; overflow: hidden; }
+.progress-bar { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+.pb-indigo { background: var(--indigo); }
+.pb-emerald { background: var(--emerald); }
+.pb-amber { background: var(--amber); }
+.pb-red { background: var(--red); }
+
+/* ── MISC ── */
+.text-muted { color: var(--muted); }
+.text-indigo { color: var(--indigo); }
+.text-emerald { color: var(--emerald); }
+.text-red { color: var(--red); }
+.fw-600 { font-weight: 600; }
+.fw-700 { font-weight: 700; }
+.font-mono { font-family: var(--mono); }
+.font-display { font-family: var(--display); }
+.d-flex { display: flex; }
+.align-center { align-items: center; }
+.gap-8 { gap: 8px; } .gap-12 { gap: 12px; } .gap-16 { gap: 16px; }
+.mt-4 { margin-top: 4px; } .mt-8 { margin-top: 8px; } .mt-12 { margin-top: 12px; } .mt-16 { margin-top: 16px; } .mt-24 { margin-top: 24px; }
+.mb-8 { margin-bottom: 8px; } .mb-16 { margin-bottom: 16px; } .mb-24 { margin-bottom: 24px; }
+
+</style>
+<style>
+  #app { min-height: 100vh; }
+  .page-loading {
+    position: fixed; inset: 0; background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999; transition: opacity 0.3s;
+  }
+  .page-loading.hide { opacity: 0; pointer-events: none; }
+  .spinner {
+    width: 36px; height: 36px; border: 3px solid var(--border);
+    border-top-color: var(--indigo); border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Smooth page transition */
+  #app { animation: pageIn 0.25s ease; }
+  @keyframes pageIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="page-loading" id="page-loader">
+  <div style="text-align:center">
+    <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin-bottom:16px">Skill<span style="color:#3d52d5">Bid</span></div>
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<div id="app"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// SKILLBID — Core App State & Utilities
+// ═══════════════════════════════════════════════════════════
+
+const App = (() => {
+
+  // ── AVATAR COLORS ─────────────────────────────────────────
+  const AV_COLORS = [
+    {bg:'#eef0fb',fg:'#3d52d5'},{bg:'#e8f7f1',fg:'#1a9e6e'},
+    {bg:'#fef3e2',fg:'#d97706'},{bg:'#fef2f2',fg:'#dc2626'},
+    {bg:'#f3e8ff',fg:'#7c3aed'},{bg:'#e0f2fe',fg:'#0369a1'},
+    {bg:'#fce7f3',fg:'#be185d'},{bg:'#f0fdf4',fg:'#15803d'},
+  ];
+  function pickColor(seed) {
+    let h = 0;
+    for (let i=0;i<seed.length;i++) h = (h*31+seed.charCodeAt(i)) & 0xffff;
+    return AV_COLORS[h % AV_COLORS.length];
+  }
+  function initials(name) {
+    return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  }
+
+  // ── SAMPLE DATA ───────────────────────────────────────────
+  const SEED_USERS = [
+    {id:'u1',name:'Ayesha Raza',email:'ayesha@lums.edu.pk',password:'pass123',role:'student',university:'LUMS',bio:'UI/UX designer & brand strategist. 3 years experience.',skills:['UI/UX','Branding','Figma'],rating:4.9,totalEarned:142000,completedJobs:38,joinedAt:'2024-01-15'},
+    {id:'u2',name:'Bilal Ahmed',email:'bilal@fast.edu.pk',password:'pass123',role:'student',university:'FAST NUCES',bio:'Full-stack developer specialising in React and Node.js.',skills:['React','Node.js','MongoDB'],rating:4.8,totalEarned:98500,completedJobs:29,joinedAt:'2024-02-01'},
+    {id:'u3',name:'Sara Malik',email:'sara@beacon.edu.pk',password:'pass123',role:'student',university:'Beaconhouse NSE',bio:'Video editor and content creator for YouTube & social media.',skills:['Video Editing','After Effects','DaVinci'],rating:4.7,totalEarned:76200,completedJobs:22,joinedAt:'2024-01-28'},
+    {id:'u4',name:'Hassan Tariq',email:'hassan@nust.edu.pk',password:'pass123',role:'student',university:'NUST',bio:'Android developer, Material Design expert.',skills:['Android','Kotlin','Firebase'],rating:4.6,totalEarned:54000,completedJobs:18,joinedAt:'2024-03-05'},
+    {id:'u5',name:'Fatima Noor',email:'fatima@iba.edu.pk',password:'pass123',role:'student',university:'IBA Karachi',bio:'Business plan writer, market analyst, MBA student.',skills:['Business Writing','Research','Excel'],rating:4.8,totalEarned:47800,completedJobs:15,joinedAt:'2024-02-18'},
+    {id:'u6',name:'Omar Sheikh',email:'omar@pu.edu.pk',password:'pass123',role:'student',university:'Punjab University',bio:'Graphic designer specialising in social media and print.',skills:['Illustrator','Photoshop','Canva'],rating:4.5,totalEarned:38200,completedJobs:12,joinedAt:'2024-03-12'},
+    {id:'u7',name:'Zara Hussain',email:'zara@kinnaird.edu.pk',password:'pass123',role:'student',university:'Kinnaird College',bio:'Product photography editor and e-commerce specialist.',skills:['Lightroom','Photoshop','Product Photo'],rating:4.7,totalEarned:32000,completedJobs:10,joinedAt:'2024-04-01'},
+    {id:'u8',name:'Ali Baig',email:'ali@comsats.edu.pk',password:'pass123',role:'student',university:'COMSATS',bio:'WordPress developer and SEO specialist.',skills:['WordPress','PHP','SEO'],rating:4.4,totalEarned:28500,completedJobs:9,joinedAt:'2024-03-20'},
+    // Buyers
+    {id:'b1',name:'Tech Corp PK',email:'hr@techcorp.pk',password:'pass123',role:'buyer',company:'Tech Corp Pakistan',bio:'Leading tech company in Lahore'},
+    {id:'b2',name:'Design Studio',email:'hello@dstudio.pk',password:'pass123',role:'buyer',company:'Design Studio Karachi',bio:'Creative agency'},
+    {id:'b3',name:'Ali Hassan',email:'ali.hassan@gmail.com',password:'pass123',role:'buyer',bio:'Entrepreneur'},
+  ];
+
+  const SEED_AUCTIONS = [
+    {id:'a1',studentId:'u1',title:'Complete Brand Identity Package',desc:'Full brand identity: logo variants, color palette, typography system, business cards, letterhead. 3 concepts, unlimited revisions. Delivered as AI + PNG + PDF.',category:'design',tags:['Logo','Branding','Illustrator'],startBid:1500,currentBid:4200,minBid:4620,bids:[{bidderId:'b1',name:'Tech Corp PK',amount:4200,at:Date.now()-300000},{bidderId:'b2',name:'Design Studio',amount:3800,at:Date.now()-600000},{bidderId:'b3',name:'Ali Hassan',amount:3200,at:Date.now()-900000}],timeLeft:92*60,maxTime:120*60,status:'live',deliveryDays:5,featured:true},
+    {id:'a2',studentId:'u2',title:'React.js Admin Dashboard',desc:'Custom responsive admin panel with charts (Recharts), data tables, dark mode, auth pages. Clean component architecture. Full source code.',category:'dev',tags:['React','JavaScript','TailwindCSS'],startBid:2000,currentBid:6800,minBid:7480,bids:[{bidderId:'b1',name:'Tech Corp PK',amount:6800,at:Date.now()-120000}],timeLeft:11*60,maxTime:120*60,status:'live',deliveryDays:7,featured:true},
+    {id:'a3',studentId:'u3',title:'YouTube Video Edit (up to 10 min)',desc:'Professional edit: colour grade, transitions, text animations, subtitles, background music, thumbnail design. DaVinci Resolve or Premiere Pro.',category:'video',tags:['Video Editing','YouTube','Thumbnail'],startBid:800,currentBid:1600,minBid:1760,bids:[{bidderId:'b3',name:'Ali Hassan',amount:1600,at:Date.now()-200000}],timeLeft:155*60,maxTime:180*60,status:'live',deliveryDays:3,featured:false},
+    {id:'a4',studentId:'u4',title:'Android App — Basic (2 Screens)',desc:'Simple Android app: onboarding, login, main feature screen. Material Design 3. APK + clean Kotlin source code on GitHub.',category:'dev',tags:['Android','Kotlin','Firebase'],startBid:3000,currentBid:4600,minBid:5060,bids:[{bidderId:'b2',name:'Design Studio',amount:4600,at:Date.now()-450000}],timeLeft:58*60,maxTime:120*60,status:'live',deliveryDays:10,featured:false},
+    {id:'a5',studentId:'u5',title:'Investor-Ready Business Plan (20 pages)',desc:'Full business plan: executive summary, market analysis, competitive landscape, 3-year financial projections, go-to-market strategy. Word + PDF.',category:'writing',tags:['Business Plan','Research','Finance'],startBid:1200,currentBid:3100,minBid:3410,bids:[{bidderId:'b1',name:'Tech Corp PK',amount:3100,at:Date.now()-180000}],timeLeft:38*60,maxTime:120*60,status:'live',deliveryDays:5,featured:false},
+    {id:'a6',studentId:'u6',title:'30-Post Social Media Content Pack',desc:'30 branded graphics for Instagram & Facebook. Consistent style with your colors/fonts. Feed posts + story versions. Canva editable files included.',category:'design',tags:['Social Media','Canva','Instagram'],startBid:2500,currentBid:2500,minBid:2750,bids:[],timeLeft:115*60,maxTime:120*60,status:'live',deliveryDays:4,featured:false},
+    {id:'a7',studentId:'u7',title:'20 Product Photo Retouches',desc:'Background removal, color correction, shadow addition, sharpening for e-commerce. Amazon/Daraz ready. JPG + PNG delivered within 48 hours.',category:'photo',tags:['Lightroom','E-commerce','Product Photo'],startBid:600,currentBid:1200,minBid:1320,bids:[{bidderId:'b3',name:'Ali Hassan',amount:1200,at:Date.now()-600000}],timeLeft:7*60,maxTime:60*60,status:'live',deliveryDays:2,featured:false},
+    {id:'a8',studentId:'u8',title:'5-Page WordPress Website',desc:'Responsive WordPress site: homepage, about, services, blog, contact. Custom theme, SEO optimised, contact form, Google Maps, fast loading.',category:'dev',tags:['WordPress','PHP','SEO'],startBid:2500,currentBid:3900,minBid:4290,bids:[{bidderId:'b2',name:'Design Studio',amount:3900,at:Date.now()-720000}],timeLeft:79*60,maxTime:120*60,status:'live',deliveryDays:6,featured:false},
+  ];
+
+  const SEED_BIDS = [
+    {id:'bd1',auctionId:'a1',bidderId:'b1',bidderName:'Tech Corp PK',amount:4200,at:Date.now()-300000},
+    {id:'bd2',auctionId:'a1',bidderId:'b2',bidderName:'Design Studio',amount:3800,at:Date.now()-600000},
+    {id:'bd3',auctionId:'a2',bidderId:'b1',bidderName:'Tech Corp PK',amount:6800,at:Date.now()-120000},
+    {id:'bd4',auctionId:'a7',bidderId:'b3',bidderName:'Ali Hassan',amount:1200,at:Date.now()-600000},
+  ];
+
+  // ── STATE ─────────────────────────────────────────────────
+  let _state = {
+    currentUser: null,
+    users: JSON.parse(localStorage.getItem('sb_users') || 'null') || SEED_USERS,
+    auctions: JSON.parse(localStorage.getItem('sb_auctions') || 'null') || SEED_AUCTIONS,
+    bids: JSON.parse(localStorage.getItem('sb_bids') || 'null') || SEED_BIDS,
+    messages: JSON.parse(localStorage.getItem('sb_messages') || '[]'),
+    currentPage: 'home',
+  };
+
+  // Restore session
+  const saved = localStorage.getItem('sb_session');
+  if (saved) {
+    const uid = JSON.parse(saved);
+    _state.currentUser = _state.users.find(u=>u.id===uid) || null;
+  }
+
+  function save() {
+    localStorage.setItem('sb_users', JSON.stringify(_state.users));
+    localStorage.setItem('sb_auctions', JSON.stringify(_state.auctions));
+    localStorage.setItem('sb_bids', JSON.stringify(_state.bids));
+    localStorage.setItem('sb_messages', JSON.stringify(_state.messages));
+    if (_state.currentUser) localStorage.setItem('sb_session', JSON.stringify(_state.currentUser.id));
+    else localStorage.removeItem('sb_session');
+  }
+
+  // ── AUTH ──────────────────────────────────────────────────
+  function login(email, password) {
+    const user = _state.users.find(u => u.email===email && u.password===password);
+    if (!user) return {ok:false, msg:'Invalid email or password'};
+    _state.currentUser = user;
+    save();
+    return {ok:true, user};
+  }
+
+  function register(data) {
+    if (_state.users.find(u=>u.email===data.email)) return {ok:false, msg:'Email already registered'};
+    const id = 'u'+Date.now();
+    const user = {
+      id, name:data.name, email:data.email, password:data.password,
+      role:data.role||'student', university:data.university||'',
+      bio:'', skills:[], rating:0, totalEarned:0, completedJobs:0,
+      joinedAt:new Date().toISOString().slice(0,10),
+      company:data.company||''
+    };
+    _state.users.push(user);
+    _state.currentUser = user;
+    save();
+    return {ok:true, user};
+  }
+
+  function logout() {
+    _state.currentUser = null;
+    localStorage.removeItem('sb_session');
+  }
+
+  // ── AUCTIONS ──────────────────────────────────────────────
+  function getAuctions(filter={}) {
+    return _state.auctions.filter(a => {
+      if (filter.status && a.status !== filter.status) return false;
+      if (filter.category && filter.category !== 'all' && a.category !== filter.category) return false;
+      if (filter.studentId && a.studentId !== filter.studentId) return false;
+      if (filter.q) {
+        const q = filter.q.toLowerCase();
+        return a.title.toLowerCase().includes(q) || a.desc.toLowerCase().includes(q) || (a.tags||[]).some(t=>t.toLowerCase().includes(q));
+      }
+      return true;
+    });
+  }
+
+  function getAuction(id) { return _state.auctions.find(a=>a.id===id); }
+
+  function createAuction(data) {
+    const u = _state.currentUser;
+    if (!u) return {ok:false, msg:'Please log in'};
+    const id = 'a'+Date.now();
+    const dur = parseInt(data.duration)*60;
+    const auction = {
+      id, studentId: u.id,
+      title: data.title, desc: data.desc,
+      category: data.category, tags: data.tags||[],
+      startBid: parseInt(data.startBid),
+      currentBid: parseInt(data.startBid),
+      minBid: Math.ceil(parseInt(data.startBid)*1.1),
+      bids: [], timeLeft: dur, maxTime: dur,
+      status:'live', deliveryDays: parseInt(data.deliveryDays)||3,
+      featured: false, createdAt: Date.now()
+    };
+    _state.auctions.unshift(auction);
+    save();
+    return {ok:true, auction};
+  }
+
+  function placeBid(auctionId, amount, bidderName, contact) {
+    const u = _state.currentUser;
+    if (!u) return {ok:false, msg:'Please log in to bid'};
+    const a = _state.auctions.find(x=>x.id===auctionId);
+    if (!a) return {ok:false, msg:'Auction not found'};
+    if (a.status !== 'live') return {ok:false, msg:'This auction has ended'};
+    if (a.timeLeft <= 0) return {ok:false, msg:'Auction time has expired'};
+    if (a.studentId === u.id) return {ok:false, msg:'You cannot bid on your own auction'};
+    const minRequired = Math.ceil(a.currentBid * 1.1);
+    if (amount < minRequired) return {ok:false, msg:`Minimum bid is Rs. ${minRequired.toLocaleString()}`};
+
+    const bid = {id:'bd'+Date.now(), auctionId, bidderId:u.id, bidderName:bidderName||u.name, contact, amount, at:Date.now()};
+    a.bids.unshift(bid);
+    a.currentBid = amount;
+    a.minBid = Math.ceil(amount*1.1);
+    _state.bids.unshift(bid);
+
+    // extend time if < 5 minutes
+    if (a.timeLeft < 300) a.timeLeft = 300;
+    save();
+    return {ok:true, bid};
+  }
+
+  function getUserBids(userId) {
+    return _state.bids.filter(b=>b.bidderId===userId).map(b=>({
+      ...b, auction: _state.auctions.find(a=>a.id===b.auctionId)
+    }));
+  }
+
+  function getUser(id) { return _state.users.find(u=>u.id===id); }
+
+  function updateProfile(data) {
+    const u = _state.currentUser;
+    if (!u) return {ok:false};
+    Object.assign(u, data);
+    const idx = _state.users.findIndex(x=>x.id===u.id);
+    if (idx>=0) _state.users[idx] = u;
+    _state.currentUser = u;
+    save();
+    return {ok:true, user:u};
+  }
+
+  // ── MESSAGES ──────────────────────────────────────────────
+  function sendMessage(toId, text, auctionId) {
+    const u = _state.currentUser;
+    if (!u) return {ok:false};
+    const msg = {id:'m'+Date.now(), fromId:u.id, fromName:u.name, toId, text, auctionId, at:Date.now(), read:false};
+    _state.messages.push(msg);
+    save();
+    return {ok:true, msg};
+  }
+  function getMessages(userId) {
+    return _state.messages.filter(m=>m.fromId===userId||m.toId===userId);
+  }
+  function getUnread(userId) {
+    return _state.messages.filter(m=>m.toId===userId && !m.read).length;
+  }
+  function markRead(userId) {
+    _state.messages.forEach(m=>{ if(m.toId===userId) m.read=true; });
+    save();
+  }
+
+  // ── TIMER ENGINE ─────────────────────────────────────────
+  let _timerCallbacks = [];
+  let _simTimer = null;
+
+  function startTimers(onTick, onSimBid) {
+    _timerCallbacks = [];
+    if (onTick) _timerCallbacks.push(onTick);
+
+    setInterval(() => {
+      _state.auctions.forEach(a => {
+        if (a.status==='live' && a.timeLeft > 0) {
+          a.timeLeft--;
+          if (a.timeLeft <= 0) { a.status='ended'; save(); }
+        }
+      });
+      _timerCallbacks.forEach(fn=>fn());
+    }, 1000);
+
+    // Simulate bids every 10–18 s
+    function schedSim() {
+      _simTimer = setTimeout(() => {
+        if (onSimBid) {
+          const live = _state.auctions.filter(a=>a.status==='live'&&a.timeLeft>60);
+          if (live.length) {
+            const a = live[Math.floor(Math.random()*live.length)];
+            const NAMES=['TechCorp PK','Creative Agency','Ali Hassan','Malik & Co','StartupPK','Design Hub','Media House'];
+            const bidder = NAMES[Math.floor(Math.random()*NAMES.length)];
+            const increase = Math.ceil(a.currentBid*(0.06+Math.random()*0.1));
+            a.bids.unshift({id:'bs'+Date.now(),auctionId:a.id,bidderId:'sim',bidderName:bidder,amount:a.currentBid+increase,at:Date.now()});
+            a.currentBid += increase;
+            a.minBid = Math.ceil(a.currentBid*1.1);
+            save();
+            onSimBid({auction:a, bidder, amount:a.currentBid});
+          }
+        }
+        schedSim();
+      }, 10000 + Math.random()*8000);
+    }
+    schedSim();
+  }
+
+  // ── HELPERS ───────────────────────────────────────────────
+  function formatRs(n) { return 'Rs. '+Number(n).toLocaleString(); }
+  function formatTime(s) {
+    if (s<=0) return 'ENDED';
+    const h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
+    if (h>0) return `${h}h ${String(m).padStart(2,'0')}m`;
+    return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  }
+  function timeClass(s,max) {
+    if (s<=0) return '';
+    if (s < 10*60) return 't-red';
+    if (s < 30*60) return 't-yellow';
+    return 't-green';
+  }
+  function barClass(s,max) {
+    if (s < 10*60) return 'red';
+    if (s < 30*60) return 'yellow';
+    return 'green';
+  }
+  function progressPct(s,max) { return Math.max(0,Math.min(100,(1-s/max)*100)); }
+  function timeAgo(ts) {
+    const d=(Date.now()-ts)/1000;
+    if (d<60) return 'just now';
+    if (d<3600) return Math.floor(d/60)+'m ago';
+    if (d<86400) return Math.floor(d/3600)+'h ago';
+    return Math.floor(d/86400)+'d ago';
+  }
+  function avatar(name,size='av-40') {
+    const c=pickColor(name||'?'), ini=initials(name||'?');
+    return `<div class="avatar ${size}" style="background:${c.bg};color:${c.fg}">${ini}</div>`;
+  }
+
+  return {
+    get state() { return _state; },
+    login, register, logout, save,
+    getAuctions, getAuction, createAuction, placeBid,
+    getUserBids, getUser, updateProfile,
+    sendMessage, getMessages, getUnread, markRead,
+    startTimers,
+    fmt: formatRs, fmtTime: formatTime, timeClass, barClass, progressPct, timeAgo, avatar,
+    pickColor, initials,
+  };
+})();
+
+// ── TOAST ──────────────────────────────────────────────────
+function toast(msg, type='info', duration=3500) {
+  const stack = document.getElementById('toast-stack');
+  if (!stack) return;
+  const icons = {success:'✓',error:'✕',info:'ℹ',warning:'⚠'};
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span>${icons[type]||''}</span> ${msg}`;
+  stack.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateX(20px)'; el.style.transition='all 0.3s'; setTimeout(()=>el.remove(),300); }, duration);
+}
+
+// ── MODAL ──────────────────────────────────────────────────
+function openModal(id) {
+  const el=document.getElementById('m-'+id);
+  if(el){el.classList.add('open');document.body.style.overflow='hidden';}
+}
+function closeModal(id) {
+  const el=document.getElementById('m-'+id);
+  if(el){el.classList.remove('open');document.body.style.overflow='';}
+}
+document.addEventListener('click',e=>{
+  if(e.target.classList.contains('modal-bg')){
+    e.target.classList.remove('open');
+    document.body.style.overflow='';
+  }
+});
+
+// ── NAV DROPDOWN ──────────────────────────────────────────
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.nav-avatar-wrap')) {
+    document.querySelectorAll('.nav-dropdown').forEach(d=>d.classList.remove('open'));
+  }
+});
+
+</script>
+<script>
+// ═══════════════════════════════════════════════
+// SHARED NAV + LAYOUT RENDERER
+// ═══════════════════════════════════════════════
+
+function renderNav(activePage) {
+  const u = App.state.currentUser;
+  const unread = u ? App.getUnread(u.id) : 0;
+
+  const guestLinks = `
+    <button class="nav-link ${activePage==='home'?'active':''}" onclick="goto('home')">Home</button>
+    <button class="nav-link ${activePage==='auctions'?'active':''}" onclick="goto('auctions')">Live Auctions</button>
+    <button class="nav-link ${activePage==='leaderboard'?'active':''}" onclick="goto('leaderboard')">Leaderboard</button>
+    <button class="nav-link ${activePage==='how'?'active':''}" onclick="goto('how')">How it Works</button>
+  `;
+  const studentLinks = `
+    <button class="nav-link ${activePage==='auctions'?'active':''}" onclick="goto('auctions')">Live Auctions</button>
+    <button class="nav-link ${activePage==='dashboard'?'active':''}" onclick="goto('dashboard')">My Dashboard</button>
+    <button class="nav-link ${activePage==='leaderboard'?'active':''}" onclick="goto('leaderboard')">Leaderboard</button>
+    <button class="nav-link ${activePage==='messages'?'active':''}" onclick="goto('messages')">
+      Messages ${unread>0?`<span style="background:var(--red);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:4px">${unread}</span>`:''}
+    </button>
+  `;
+  const buyerLinks = `
+    <button class="nav-link ${activePage==='auctions'?'active':''}" onclick="goto('auctions')">Browse Auctions</button>
+    <button class="nav-link ${activePage==='my-bids'?'active':''}" onclick="goto('my-bids')">My Bids</button>
+    <button class="nav-link ${activePage==='leaderboard'?'active':''}" onclick="goto('leaderboard')">Top Talent</button>
+    <button class="nav-link ${activePage==='messages'?'active':''}" onclick="goto('messages')">
+      Messages ${unread>0?`<span style="background:var(--red);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:4px">${unread}</span>`:''}
+    </button>
+  `;
+
+  let links = u ? (u.role==='student' ? studentLinks : buyerLinks) : guestLinks;
+
+  const userMenu = u ? `
+    <div class="nav-avatar-wrap" onclick="toggleDropdown()">
+      ${App.avatar(u.name,'av-32')}
+      <span class="nav-username">${u.name.split(' ')[0]}</span>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="nav-dropdown" id="nav-dd">
+        <div class="nav-dd-item" onclick="goto('profile')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          My Profile
+        </div>
+        <div class="nav-dd-item" onclick="goto('${u.role==='student'?'dashboard':'my-bids'}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          ${u.role==='student'?'Dashboard':'My Bids'}
+        </div>
+        <div class="nav-dd-item" onclick="goto('settings')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          Settings
+        </div>
+        <div class="nav-dd-divider"></div>
+        <div class="nav-dd-item danger" onclick="doLogout()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          Log out
+        </div>
+      </div>
+    </div>
+  ` : `
+    <button class="btn btn-ghost btn-sm" onclick="goto('login')">Log in</button>
+    <button class="btn btn-primary btn-sm" onclick="goto('register')">Sign up free</button>
+  `;
+
+  return `
+    <nav class="nav">
+      <div class="nav-inner">
+        <div class="nav-logo" onclick="goto('home')" style="cursor:pointer">Skill<span>Bid</span></div>
+        <div class="nav-links">${links}</div>
+        <div class="nav-right">${userMenu}</div>
+      </div>
+    </nav>
+  `;
+}
+
+function toggleDropdown() {
+  document.getElementById('nav-dd')?.classList.toggle('open');
+}
+
+function doLogout() {
+  App.logout();
+  toast('Logged out successfully','info');
+  goto('home');
+}
+
+function renderFooter() {
+  return `
+    <footer style="border-top:1px solid var(--border);padding:36px 0;margin-top:auto">
+      <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+        <div>
+          <div style="font-family:var(--display);font-size:18px;font-weight:800;margin-bottom:4px">Skill<span style="color:var(--indigo)">Bid</span></div>
+          <div style="font-size:13px;color:var(--muted)">Pakistan's live talent auction marketplace</div>
+        </div>
+        <div style="display:flex;gap:24px;flex-wrap:wrap">
+          <a href="#" style="font-size:13px;color:var(--muted)">About</a>
+          <a href="#" style="font-size:13px;color:var(--muted)">How it Works</a>
+          <a href="#" style="font-size:13px;color:var(--muted)">Terms</a>
+          <a href="#" style="font-size:13px;color:var(--muted)">Privacy</a>
+          <a href="#" style="font-size:13px;color:var(--muted)">Contact</a>
+        </div>
+        <div style="font-size:12px;color:var(--dim);font-family:var(--mono)">© 2025 SkillBid · Made in Lahore 🇵🇰</div>
+      </div>
+    </footer>
+  `;
+}
+
+// ── AUCTION CARD RENDERER ────────────────────────────────
+function renderAuctionCard(a, showBidBar=true) {
+  const student = App.getUser(a.studentId);
+  const sName = student?.name || 'Unknown';
+  const school = student?.university || '';
+  const pct = App.progressPct(a.timeLeft, a.maxTime);
+  const bc = App.barClass(a.timeLeft, a.maxTime);
+  const tc = App.timeClass(a.timeLeft, a.maxTime);
+  const minNext = a.minBid || Math.ceil(a.currentBid*1.1);
+  const isEnding = a.timeLeft < 10*60 && a.timeLeft > 0;
+  const isFeatured = a.featured;
+  const ended = a.status==='ended' || a.timeLeft<=0;
+
+  const catBadge = {
+    design:`<span class="badge badge-indigo">Design</span>`,
+    dev:`<span class="badge badge-emerald">Development</span>`,
+    video:`<span class="badge badge-amber">Video</span>`,
+    writing:`<span class="badge badge-gray">Writing</span>`,
+    photo:`<span class="badge badge-gray">Photography</span>`,
+  }[a.category]||'';
+
+  return `
+    <div class="auction-card ${isEnding&&!ended?'ending':''} ${isFeatured?'featured':''}" style="${ended?'opacity:0.7':''}" data-auction-id="${a.id}">
+      <div class="ac-bar"><div class="ac-bar-fill ${bc}" style="width:${pct}%"></div></div>
+      <div class="ac-head">
+        <div class="ac-student" style="cursor:pointer" onclick="goto('profile-view','${a.studentId}')">
+          ${App.avatar(sName,'av-40')}
+          <div>
+            <div class="ac-student-name">${sName}</div>
+            <div class="ac-student-school">${school}</div>
+          </div>
+        </div>
+        <div class="ac-badges">
+          ${catBadge}
+          ${isEnding&&!ended?'<span class="badge badge-red">⚡ Ending</span>':''}
+          ${ended?'<span class="badge badge-gray">Ended</span>':''}
+          ${isFeatured&&!ended?'<span class="badge badge-indigo">★ Featured</span>':''}
+        </div>
+      </div>
+      <div class="ac-body" style="cursor:pointer" onclick="goto('auction-detail','${a.id}')">
+        <div class="ac-title">${a.title}</div>
+        <div class="ac-desc">${a.desc.slice(0,120)}${a.desc.length>120?'…':''}</div>
+        ${(a.tags||[]).length?`<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:8px">${a.tags.map(t=>`<span class="badge badge-gray">${t}</span>`).join('')}</div>`:''}
+      </div>
+      <div class="ac-stats">
+        <div class="ac-stat">
+          <span class="ac-stat-val price" id="ac-price-${a.id}">${App.fmt(a.currentBid)}</span>
+          <div class="ac-stat-lbl">Current bid</div>
+        </div>
+        <div class="ac-stat">
+          <span class="ac-stat-val ${ended?'':tc}" id="ac-timer-${a.id}">${ended?'ENDED':App.fmtTime(a.timeLeft)}</span>
+          <div class="ac-stat-lbl">Time left</div>
+        </div>
+        <div class="ac-stat">
+          <span class="ac-stat-val" id="ac-bids-${a.id}">${a.bids.length}</span>
+          <div class="ac-stat-lbl">Bids</div>
+        </div>
+      </div>
+      ${showBidBar && !ended ? `
+      <div class="ac-foot">
+        <input class="ac-quick-input" type="number" id="qi-${a.id}" placeholder="Min Rs. ${minNext.toLocaleString()}" min="${minNext}">
+        <button class="btn btn-primary btn-sm" onclick="quickBid('${a.id}')">Bid now</button>
+        <button class="btn btn-outline btn-sm btn-icon" onclick="goto('auction-detail','${a.id}')" title="View details">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>` : !ended ? '' : `<div class="ac-foot" style="justify-content:center"><button class="btn btn-ghost btn-sm" onclick="goto('auction-detail','${a.id}')">View results →</button></div>`}
+    </div>
+  `;
+}
+
+// ── QUICK BID ────────────────────────────────────────────
+function quickBid(auctionId) {
+  if (!App.state.currentUser) { toast('Please log in to bid','error'); goto('login'); return; }
+  const amt = parseInt(document.getElementById('qi-'+auctionId)?.value);
+  const a = App.getAuction(auctionId);
+  if (!a) return;
+  const min = a.minBid || Math.ceil(a.currentBid*1.1);
+  if (!amt || amt < min) { toast(`Minimum bid is ${App.fmt(min)}`,'error'); return; }
+  const r = App.placeBid(auctionId, amt, App.state.currentUser.name, '');
+  if (r.ok) { toast(`Bid placed — ${App.fmt(amt)}`,'success'); updateAllTimers(); }
+  else toast(r.msg,'error');
+}
+
+// ── TIMER UPDATES ────────────────────────────────────────
+function updateAllTimers() {
+  App.state.auctions.forEach(a => {
+    const tEl = document.getElementById('ac-timer-'+a.id);
+    const pEl = document.getElementById('ac-price-'+a.id);
+    const bEl = document.getElementById('ac-bids-'+a.id);
+    if (tEl) {
+      tEl.textContent = a.status==='ended'||a.timeLeft<=0 ? 'ENDED' : App.fmtTime(a.timeLeft);
+      tEl.className = 'ac-stat-val '+(a.timeLeft>0?App.timeClass(a.timeLeft,a.maxTime):'');
+    }
+    if (pEl) pEl.textContent = App.fmt(a.currentBid);
+    if (bEl) bEl.textContent = a.bids.length;
+    // update bar
+    const bar = document.querySelector(`[data-auction-id="${a.id}"] .ac-bar-fill`);
+    if (bar) {
+      bar.style.width = App.progressPct(a.timeLeft,a.maxTime)+'%';
+      bar.className = 'ac-bar-fill '+App.barClass(a.timeLeft,a.maxTime);
+    }
+  });
+}
+
+</script>
+<script>
+// ═══════════════════════════════════════════════
+// PAGE RENDERERS
+// ═══════════════════════════════════════════════
+
+// ── HOME PAGE ────────────────────────────────────────────
+function renderHome() {
+  const liveAuctions = App.getAuctions({status:'live'});
+  const featured = liveAuctions.filter(a=>a.featured).slice(0,2);
+  const recent   = liveAuctions.filter(a=>!a.featured).slice(0,3);
+
+  return `
+    ${renderNav('home')}
+    <div id="toast-stack"></div>
+
+    <!-- HERO -->
+    <section style="background:var(--white);padding:calc(var(--nav-h) + 56px) 0 56px;border-bottom:1px solid var(--border)">
+      <div class="container">
+        <div style="max-width:680px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+            <div class="live-pill"><div class="live-dot"></div>LIVE NOW</div>
+            <span style="font-size:13px;color:var(--muted);font-family:var(--mono)">${liveAuctions.length} active auctions</span>
+          </div>
+          <h1 style="font-size:clamp(42px,6vw,72px);font-weight:800;line-height:1.05;letter-spacing:-1.5px;margin-bottom:22px">
+            Your Skill,<br>Your <span style="color:var(--indigo)">Market Price</span>
+          </h1>
+          <p style="font-size:17px;color:var(--muted);line-height:1.7;max-width:520px;margin-bottom:32px">Pakistan's first live talent auction platform. Students post skills. Businesses bid in real-time. The market decides what you're worth — not a fixed rate.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="btn btn-primary btn-lg" onclick="goto('${App.state.currentUser?'post-auction':'register'}')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+              Post your skill — free
+            </button>
+            <button class="btn btn-outline btn-lg" onclick="goto('auctions')">Browse live auctions</button>
+          </div>
+          <div style="display:flex;gap:32px;margin-top:40px;padding-top:32px;border-top:1px solid var(--border)">
+            <div><div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--indigo)" id="h-stat-live">—</div><div style="font-size:13px;color:var(--muted);margin-top:2px">Live auctions</div></div>
+            <div><div style="font-family:var(--display);font-size:28px;font-weight:800">847</div><div style="font-size:13px;color:var(--muted);margin-top:2px">Active students</div></div>
+            <div><div style="font-family:var(--display);font-size:28px;font-weight:800">Rs. 12M+</div><div style="font-size:13px;color:var(--muted);margin-top:2px">Paid out total</div></div>
+            <div><div style="font-family:var(--display);font-size:28px;font-weight:800">4.8★</div><div style="font-size:13px;color:var(--muted);margin-top:2px">Avg. rating</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED AUCTIONS -->
+    <section style="padding:52px 0;background:var(--off);border-bottom:1px solid var(--border)">
+      <div class="container">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:24px">
+          <div>
+            <div class="label">Featured Auctions</div>
+            <h2 style="font-size:24px;font-weight:800">Hot right now</h2>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="goto('auctions')">See all auctions →</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px" id="home-featured">
+          ${featured.map(a=>renderAuctionCard(a)).join('')}
+          ${recent.slice(0,1).map(a=>renderAuctionCard(a)).join('')}
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section style="padding:60px 0;background:var(--white);border-bottom:1px solid var(--border)">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:40px">
+          <div class="label" style="justify-content:center;display:flex">How It Works</div>
+          <h2 style="font-size:32px;font-weight:800;margin-top:6px">Simple. Fast. Fair.</h2>
+          <p style="color:var(--muted);margin-top:8px;font-size:15px">From skill to payment in 4 steps</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px">
+          ${[
+            {n:'01',icon:'🎓',title:'Post your skill',desc:'Students list what they can deliver. Set minimum bid, duration (1–24 hrs), and delivery timeline. Completely free to post.'},
+            {n:'02',icon:'⚡',title:'Live bidding',desc:'Companies and entrepreneurs place real-time bids. Competitive bidding drives prices up — you earn market rate.'},
+            {n:'03',icon:'🏆',title:'Highest bid wins',desc:'Auction closes automatically. Winner contacts you with a brief. Escrow payment is held securely.'},
+            {n:'04',icon:'💸',title:'Get paid fast',desc:'Deliver the work. Payment released via JazzCash, Easypaisa, or bank transfer within 24 hours. SkillBid takes 12%.'},
+          ].map(s=>`
+            <div style="padding:24px;background:var(--off);border:1px solid var(--border);border-radius:var(--radius-lg);position:relative;overflow:hidden">
+              <div style="position:absolute;right:-4px;top:-8px;font-family:var(--display);font-size:64px;font-weight:800;color:var(--border);line-height:1">${s.n}</div>
+              <div style="font-size:28px;margin-bottom:12px">${s.icon}</div>
+              <h3 style="font-size:15px;font-weight:700;margin-bottom:6px">${s.title}</h3>
+              <p style="font-size:13px;color:var(--muted);line-height:1.6">${s.desc}</p>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section style="padding:60px 0;background:var(--indigo)">
+      <div class="container" style="text-align:center">
+        <h2 style="font-size:36px;font-weight:800;color:#fff;margin-bottom:12px">Ready to auction your skills?</h2>
+        <p style="color:rgba(255,255,255,0.7);font-size:16px;margin-bottom:28px">Join 800+ students earning above market rate. Free to post, always.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-lg" style="background:#fff;color:var(--indigo)" onclick="goto('register')">Get started free</button>
+          <button class="btn btn-lg" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3)" onclick="goto('auctions')">Browse auctions</button>
+        </div>
+      </div>
+    </section>
+
+    ${renderFooter()}
+  `;
+}
+
+// ── AUCTIONS PAGE ─────────────────────────────────────────
+function renderAuctions(catFilter='all', searchQ='') {
+  const all = App.getAuctions({status:'live', category:catFilter, q:searchQ||undefined});
+  const cats = ['all','design','dev','video','writing','photo'];
+  const catLabels = {all:'All Skills',design:'Design',dev:'Development',video:'Video & Media',writing:'Writing',photo:'Photography'};
+
+  return `
+    ${renderNav('auctions')}
+    <div id="toast-stack"></div>
+    <div class="page-bg">
+      <div class="container">
+
+        <!-- Header row -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap">
+          <div>
+            <h1 style="font-size:28px;font-weight:800">Live Auctions</h1>
+            <p style="color:var(--muted);font-size:14px;margin-top:4px">${all.length} auction${all.length!==1?'s':''} · Updated every second</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <div class="live-pill"><div class="live-dot"></div>LIVE</div>
+            ${App.state.currentUser?.role==='student'?`<button class="btn btn-primary btn-sm" onclick="goto('post-auction')">+ Post your skill</button>`:''}
+          </div>
+        </div>
+
+        <!-- Search bar -->
+        <div style="margin-bottom:20px">
+          <div class="input-icon-wrap" style="max-width:480px">
+            <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input class="form-input" placeholder="Search skills, students, tags…" id="auction-search" value="${searchQ}" oninput="searchAuctions(this.value)">
+          </div>
+        </div>
+
+        <!-- Category tabs -->
+        <div class="tabs-wrap mb-24" style="margin-bottom:24px;overflow-x:auto">
+          ${cats.map(c=>`<button class="tab-btn ${catFilter===c?'active':''}" onclick="filterAuctions('${c}')">${catLabels[c]}</button>`).join('')}
+        </div>
+
+        <!-- Grid -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px" id="auctions-grid">
+          ${all.length ? all.map(a=>renderAuctionCard(a)).join('') : `
+            <div class="empty-state" style="grid-column:1/-1">
+              <div class="empty-state-icon">🔍</div>
+              <h3>No auctions found</h3>
+              <p>Try a different category or search term</p>
+            </div>
+          `}
+        </div>
+
+      </div>
+    </div>
+    ${renderFooter()}
+  `;
+}
+
+let _searchTimeout;
+function searchAuctions(q) {
+  clearTimeout(_searchTimeout);
+  _searchTimeout = setTimeout(()=>{ goto('auctions',null,{cat:window._catFilter||'all',q}); }, 250);
+}
+function filterAuctions(cat) {
+  window._catFilter = cat;
+  const q = document.getElementById('auction-search')?.value||'';
+  goto('auctions',null,{cat,q});
+}
+
+// ── AUCTION DETAIL ─────────────────────────────────────────
+function renderAuctionDetail(auctionId) {
+  const a = App.getAuction(auctionId);
+  if (!a) return `${renderNav('auctions')}<div class="page-bg"><div class="container"><p>Auction not found</p></div></div>`;
+  const student = App.getUser(a.studentId);
+  const u = App.state.currentUser;
+  const ended = a.status==='ended'||a.timeLeft<=0;
+  const minNext = a.minBid||Math.ceil(a.currentBid*1.1);
+  const pct = App.progressPct(a.timeLeft,a.maxTime);
+  const winner = ended && a.bids.length ? a.bids[0] : null;
+  const isOwner = u?.id===a.studentId;
+  const topBidder = a.bids[0];
+  const isTopBidder = u && topBidder && topBidder.bidderId===u.id;
+
+  return `
+    ${renderNav('auctions')}
+    <div id="toast-stack"></div>
+    <div class="page-bg">
+      <div class="container">
+
+        <!-- Breadcrumb -->
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-bottom:20px">
+          <button class="btn-ghost" style="padding:0;font-size:13px;color:var(--muted)" onclick="goto('auctions')">← Live Auctions</button>
+          <span>/</span>
+          <span style="color:var(--text)">${a.title}</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start">
+          <!-- LEFT COL -->
+          <div>
+            <!-- Auction header card -->
+            <div class="card" style="margin-bottom:16px">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  ${a.category?`<span class="badge badge-indigo">${a.category}</span>`:''}
+                  ${ended?'<span class="badge badge-gray">Ended</span>':a.timeLeft<10*60?'<span class="badge badge-red">⚡ Ending Soon</span>':'<span class="badge badge-emerald">🟢 Live</span>'}
+                  ${a.featured?'<span class="badge badge-indigo">★ Featured</span>':''}
+                </div>
+                ${!ended?`<div class="live-pill"><div class="live-dot"></div>LIVE</div>`:''}
+              </div>
+
+              <!-- Progress bar -->
+              <div class="progress mb-16" style="margin-bottom:16px">
+                <div class="progress-bar ${a.timeLeft<10*60?'pb-red':a.timeLeft<30*60?'pb-amber':'pb-emerald'}" id="det-bar" style="width:${pct}%"></div>
+              </div>
+
+              <h1 style="font-size:24px;font-weight:800;margin-bottom:10px">${a.title}</h1>
+              <p style="font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:16px">${a.desc}</p>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                ${(a.tags||[]).map(t=>`<span class="badge badge-gray">${t}</span>`).join('')}
+              </div>
+
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:20px;border-radius:var(--radius);overflow:hidden">
+                ${[
+                  {label:'Current Bid',val:App.fmt(a.currentBid),style:'color:var(--indigo)',id:'det-price'},
+                  {label:'Time Remaining',val:ended?'ENDED':App.fmtTime(a.timeLeft),style:ended?'color:var(--muted)':`color:${a.timeLeft<10*60?'var(--red)':a.timeLeft<30*60?'var(--amber)':'var(--emerald)'}`,id:'det-timer'},
+                  {label:'Total Bids',val:a.bids.length,style:'',id:'det-bids'},
+                ].map(s=>`
+                  <div style="background:var(--white);padding:16px;text-align:center">
+                    <div style="font-family:var(--display);font-size:20px;font-weight:800;${s.style}" id="${s.id}">${s.val}</div>
+                    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;font-family:var(--mono);margin-top:4px">${s.label}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- WIN BOX -->
+            ${ended && winner ? `
+              <div class="card" style="border-color:var(--amber);background:var(--amber-light);margin-bottom:16px">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <div style="font-size:32px">🏆</div>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;color:var(--amber);margin-bottom:2px">AUCTION WON</div>
+                    <div style="font-size:18px;font-weight:800">${winner.bidderName} — ${App.fmt(winner.amount)}</div>
+                    ${isTopBidder?`<div style="font-size:13px;color:var(--text2);margin-top:4px">🎉 Congratulations! You won this auction. Contact the student to get started.</div>`:''}
+                    ${isOwner?`<div style="font-size:13px;color:var(--text2);margin-top:4px">Your buyer: <b>${winner.bidderName}</b>. Reach out via Messages.</div>`:''}
+                  </div>
+                </div>
+                ${isTopBidder||isOwner?`<button class="btn btn-primary btn-sm" style="margin-top:14px" onclick="goto('messages')">Message ${isOwner?winner.bidderName:student?.name}</button>`:''}
+              </div>` : ''}
+
+            <!-- BID HISTORY -->
+            <div class="card">
+              <h3 style="font-size:16px;font-weight:700;margin-bottom:16px">Bid History <span style="font-size:13px;font-weight:400;color:var(--muted)">(${a.bids.length} bids)</span></h3>
+              ${a.bids.length ? `
+                <div style="display:flex;flex-direction:column;gap:8px" id="bid-history-list">
+                  ${a.bids.slice(0,15).map((b,i)=>`
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:${i===0?'var(--indigo-light)':'var(--off)'};border-radius:var(--radius-sm);border:1px solid ${i===0?'var(--indigo-mid)':'var(--border)'}">
+                      <div style="display:flex;align-items:center;gap:10px">
+                        ${App.avatar(b.bidderName,'av-32')}
+                        <div>
+                          <div style="font-size:13px;font-weight:600;${i===0?'color:var(--indigo)':''}">${b.bidderName} ${i===0?'<span style="font-size:11px;background:var(--indigo);color:#fff;border-radius:10px;padding:1px 7px">Top bid</span>':''}</div>
+                          <div style="font-size:11px;color:var(--muted);font-family:var(--mono)">${App.timeAgo(b.at)}</div>
+                        </div>
+                      </div>
+                      <div style="font-family:var(--display);font-size:16px;font-weight:800;${i===0?'color:var(--indigo)':''}">${App.fmt(b.amount)}</div>
+                    </div>
+                  `).join('')}
+                </div>` : `<div style="text-align:center;padding:32px;color:var(--muted)">No bids yet — be the first!</div>`}
+            </div>
+          </div>
+
+          <!-- RIGHT COL -->
+          <div style="display:flex;flex-direction:column;gap:16px">
+
+            <!-- BID FORM -->
+            ${!ended && !isOwner ? `
+              <div class="card" style="border-color:var(--indigo-mid)">
+                <h3 style="font-size:16px;font-weight:700;margin-bottom:4px">Place a bid</h3>
+                <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Minimum bid: <b>${App.fmt(minNext)}</b></p>
+                ${u ? `
+                  <div class="form-group">
+                    <label class="form-label">Your bid (Rs.)</label>
+                    <input class="form-input" type="number" id="det-bid-amt" min="${minNext}" placeholder="${minNext}">
+                    <div class="form-hint">Minimum: ${App.fmt(minNext)} (+10%)</div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Your name / company</label>
+                    <input class="form-input" id="det-bid-name" value="${u.name||''}" placeholder="Your name">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">WhatsApp number</label>
+                    <input class="form-input" id="det-bid-contact" placeholder="+92 300 0000000">
+                    <div class="form-hint">Only shared with the student if you win</div>
+                  </div>
+                  <button class="btn btn-primary btn-block" onclick="submitDetailBid('${a.id}')">
+                    Place bid — ${App.fmt(minNext)}
+                  </button>
+                ` : `
+                  <p style="font-size:14px;color:var(--muted);text-align:center;padding:16px 0">
+                    <a style="color:var(--indigo);font-weight:600;cursor:pointer" onclick="goto('login')">Log in</a> or <a style="color:var(--indigo);font-weight:600;cursor:pointer" onclick="goto('register')">create a free account</a> to bid
+                  </p>
+                `}
+              </div>` : ended ? `
+              <div class="card" style="text-align:center;padding:24px">
+                <div style="font-size:32px;margin-bottom:8px">🔒</div>
+                <div style="font-weight:600;margin-bottom:4px">Auction closed</div>
+                <div style="font-size:13px;color:var(--muted)">This auction has ended</div>
+              </div>` : `
+              <div class="card" style="text-align:center;padding:24px">
+                <div style="font-size:32px;margin-bottom:8px">👤</div>
+                <div style="font-weight:600;margin-bottom:4px">This is your auction</div>
+                <div style="font-size:13px;color:var(--muted)">You can't bid on your own listing</div>
+              </div>`}
+
+            <!-- STUDENT CARD -->
+            <div class="card">
+              <h3 style="font-size:14px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;font-family:var(--mono)">About the student</h3>
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;cursor:pointer" onclick="goto('profile-view','${a.studentId}')">
+                ${App.avatar(student?.name||'?','av-48')}
+                <div>
+                  <div style="font-size:15px;font-weight:700">${student?.name||'Unknown'}</div>
+                  <div style="font-size:13px;color:var(--muted)">${student?.university||''}</div>
+                  <div style="display:flex;align-items:center;gap:4px;margin-top:3px">
+                    <span style="color:var(--amber)">★</span>
+                    <span style="font-size:13px;font-weight:600">${student?.rating||'—'}</span>
+                    <span style="font-size:12px;color:var(--muted)">(${student?.completedJobs||0} jobs)</span>
+                  </div>
+                </div>
+              </div>
+              <p style="font-size:13px;color:var(--text2);line-height:1.55;margin-bottom:12px">${student?.bio||''}</p>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px">
+                ${(student?.skills||[]).map(s=>`<span class="badge badge-indigo">${s}</span>`).join('')}
+              </div>
+              <div class="divider" style="margin:0 0 12px"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <div style="text-align:center;padding:10px;background:var(--off);border-radius:var(--radius-sm)">
+                  <div style="font-family:var(--display);font-size:18px;font-weight:800;color:var(--indigo)">${student?.completedJobs||0}</div>
+                  <div style="font-size:11px;color:var(--muted);font-family:var(--mono)">Jobs done</div>
+                </div>
+                <div style="text-align:center;padding:10px;background:var(--off);border-radius:var(--radius-sm)">
+                  <div style="font-family:var(--display);font-size:18px;font-weight:800;color:var(--emerald)">${App.fmt(student?.totalEarned||0).replace('Rs. ','Rs.')}</div>
+                  <div style="font-size:11px;color:var(--muted);font-family:var(--mono)">Earned</div>
+                </div>
+              </div>
+              <button class="btn btn-outline btn-block btn-sm" style="margin-top:12px" onclick="goto('profile-view','${a.studentId}')">View full profile →</button>
+            </div>
+
+            <!-- DELIVERY INFO -->
+            <div class="card card-sm" style="background:var(--off)">
+              <div style="font-size:13px;font-weight:700;margin-bottom:10px">Delivery & terms</div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="display:flex;justify-content:space-between;font-size:13px">
+                  <span style="color:var(--muted)">Delivery time</span><span style="font-weight:600">${a.deliveryDays} days</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:13px">
+                  <span style="color:var(--muted)">Platform fee</span><span style="font-weight:600">12% (from buyer)</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:13px">
+                  <span style="color:var(--muted)">Payment</span><span style="font-weight:600">Escrow protected</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:13px">
+                  <span style="color:var(--muted)">Revisions</span><span style="font-weight:600">2 included</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    ${renderFooter()}
+  `;
+}
+
+function submitDetailBid(auctionId) {
+  const amt = parseInt(document.getElementById('det-bid-amt')?.value);
+  const name = document.getElementById('det-bid-name')?.value?.trim();
+  const contact = document.getElementById('det-bid-contact')?.value?.trim();
+  const a = App.getAuction(auctionId);
+  if (!a) return;
+  const min = a.minBid||Math.ceil(a.currentBid*1.1);
+  if (!amt||amt<min) { toast(`Minimum bid is ${App.fmt(min)}`,'error'); return; }
+  if (!name) { toast('Please enter your name','error'); return; }
+  const r = App.placeBid(auctionId,amt,name,contact);
+  if (r.ok) {
+    toast(`Bid placed! ${App.fmt(amt)}`,'success');
+    // Re-render to update bid history
+    goto('auction-detail',auctionId);
+  } else toast(r.msg,'error');
+}
+
+// ── LOGIN PAGE ─────────────────────────────────────────────
+function renderLogin() {
+  return `
+    ${renderNav('')}
+    <div id="toast-stack"></div>
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--off);padding:calc(var(--nav-h)+20px) 16px 40px">
+      <div style="width:100%;max-width:420px">
+        <div style="text-align:center;margin-bottom:28px">
+          <div style="font-family:var(--display);font-size:26px;font-weight:800;margin-bottom:6px">Welcome back</div>
+          <p style="color:var(--muted);font-size:14px">Sign in to your SkillBid account</p>
+        </div>
+        <div class="card">
+          <div class="form-group">
+            <label class="form-label">Email address</label>
+            <div class="input-icon-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+              <input class="form-input" type="email" id="l-email" placeholder="you@email.com" onkeydown="if(event.key==='Enter')doLogin()">
+            </div>
+            <div class="form-error" id="l-email-err"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="input-icon-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              <input class="form-input" type="password" id="l-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+              <span class="input-action" onclick="togglePass('l-pass',this)">👁</span>
+            </div>
+            <div class="form-error" id="l-pass-err"></div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:16px;padding:10px;background:var(--off);border-radius:var(--radius-sm)">
+            <b>Demo accounts:</b> ayesha@lums.edu.pk / pass123 (student) · ali.hassan@gmail.com / pass123 (buyer)
+          </div>
+          <button class="btn btn-primary btn-block" onclick="doLogin()">Sign in</button>
+          <div class="divider-text" style="margin:18px 0"><span>or</span></div>
+          <div style="text-align:center;font-size:14px;color:var(--muted)">
+            Don't have an account? <a style="color:var(--indigo);font-weight:600;cursor:pointer" onclick="goto('register')">Sign up free</a>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--muted)">
+          <a style="cursor:pointer;color:var(--muted)" onclick="goto('home')">← Back to home</a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function togglePass(id,btn) {
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.type=el.type==='password'?'text':'password';
+  btn.textContent=el.type==='password'?'👁':'🙈';
+}
+function doLogin() {
+  const email=document.getElementById('l-email')?.value?.trim();
+  const pass=document.getElementById('l-pass')?.value;
+  let ok=true;
+  document.querySelectorAll('.form-error').forEach(e=>{e.classList.remove('show');e.textContent='';});
+  if(!email){setErr('l-email-err','Email is required');ok=false;}
+  if(!pass){setErr('l-pass-err','Password is required');ok=false;}
+  if(!ok)return;
+  const r=App.login(email,pass);
+  if(r.ok){toast('Welcome back, '+r.user.name.split(' ')[0]+'!','success');goto(r.user.role==='student'?'dashboard':'auctions');}
+  else setErr('l-email-err',r.msg);
+}
+
+// ── REGISTER PAGE ──────────────────────────────────────────
+function renderRegister() {
+  return `
+    ${renderNav('')}
+    <div id="toast-stack"></div>
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--off);padding:calc(var(--nav-h)+20px) 16px 40px">
+      <div style="width:100%;max-width:480px">
+        <div style="text-align:center;margin-bottom:28px">
+          <div style="font-family:var(--display);font-size:26px;font-weight:800;margin-bottom:6px">Create your account</div>
+          <p style="color:var(--muted);font-size:14px">Free to join. Start earning in minutes.</p>
+        </div>
+        <div class="card">
+          <!-- Role toggle -->
+          <div class="form-group">
+            <label class="form-label">I am a…</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div id="role-student" onclick="selectRole('student')" style="padding:14px;border:2px solid var(--indigo);border-radius:var(--radius);cursor:pointer;text-align:center;background:var(--indigo-light)">
+                <div style="font-size:22px;margin-bottom:6px">🎓</div>
+                <div style="font-size:14px;font-weight:600;color:var(--indigo)">Student</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px">Post & earn</div>
+              </div>
+              <div id="role-buyer" onclick="selectRole('buyer')" style="padding:14px;border:2px solid var(--border);border-radius:var(--radius);cursor:pointer;text-align:center">
+                <div style="font-size:22px;margin-bottom:6px">🏢</div>
+                <div style="font-size:14px;font-weight:600;">Business</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px">Hire & bid</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Full name</label>
+              <input class="form-input" id="r-name" placeholder="Ali Khan">
+            </div>
+            <div class="form-group">
+              <label class="form-label" id="r-org-label">University</label>
+              <input class="form-input" id="r-org" placeholder="LUMS, FAST, NUST…">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email address</label>
+            <input class="form-input" type="email" id="r-email" placeholder="you@email.com">
+            <div class="form-error" id="r-email-err"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="input-icon-wrap">
+              <input class="form-input" type="password" id="r-pass" placeholder="At least 6 characters">
+              <span class="input-action" onclick="togglePass('r-pass',this)">👁</span>
+            </div>
+            <div class="form-hint">Minimum 6 characters</div>
+          </div>
+          <button class="btn btn-primary btn-block" onclick="doRegister()" style="margin-top:4px">Create free account</button>
+          <div style="text-align:center;font-size:13px;color:var(--muted);margin-top:14px">
+            Already have an account? <a style="color:var(--indigo);font-weight:600;cursor:pointer" onclick="goto('login')">Sign in</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+let _regRole = 'student';
+function selectRole(role) {
+  _regRole=role;
+  const s=document.getElementById('role-student'),b=document.getElementById('role-buyer');
+  const lbl=document.getElementById('r-org-label'), inp=document.getElementById('r-org');
+  if(role==='student'){
+    s.style.border='2px solid var(--indigo)';s.style.background='var(--indigo-light)';s.querySelector('div:nth-child(2)').style.color='var(--indigo)';
+    b.style.border='2px solid var(--border)';b.style.background='';b.querySelector('div:nth-child(2)').style.color='';
+    lbl.textContent='University';inp.placeholder='LUMS, FAST, NUST…';
+  }else{
+    b.style.border='2px solid var(--indigo)';b.style.background='var(--indigo-light)';b.querySelector('div:nth-child(2)').style.color='var(--indigo)';
+    s.style.border='2px solid var(--border)';s.style.background='';s.querySelector('div:nth-child(2)').style.color='';
+    lbl.textContent='Company name';inp.placeholder='Your company…';
+  }
+}
+function doRegister() {
+  const name=document.getElementById('r-name')?.value?.trim();
+  const org=document.getElementById('r-org')?.value?.trim();
+  const email=document.getElementById('r-email')?.value?.trim();
+  const pass=document.getElementById('r-pass')?.value;
+  document.querySelectorAll('.form-error').forEach(e=>{e.classList.remove('show');e.textContent='';});
+  if(!name||!email||!pass){toast('Please fill in all fields','error');return;}
+  if(pass.length<6){toast('Password must be at least 6 characters','error');return;}
+  const r=App.register({name,email,password:pass,role:_regRole,university:_regRole==='student'?org:'',company:_regRole==='buyer'?org:''});
+  if(r.ok){toast('Account created! Welcome to SkillBid 🎉','success');goto(_regRole==='student'?'dashboard':'auctions');}
+  else{const e=document.getElementById('r-email-err');if(e){e.textContent=r.msg;e.classList.add('show');}}
+}
+
+// ── STUDENT DASHBOARD ──────────────────────────────────────
+function renderDashboard() {
+  const u = App.state.currentUser;
+  if (!u || u.role!=='student') { goto('login'); return ''; }
+  const myAuctions = App.getAuctions({studentId:u.id});
+  const liveA = myAuctions.filter(a=>a.status==='live');
+  const endedA = myAuctions.filter(a=>a.status==='ended');
+  const totalBidsReceived = myAuctions.reduce((s,a)=>s+a.bids.length,0);
+  const potentialEarnings = liveA.reduce((s,a)=>s+a.currentBid,0);
+
+  return `
+    ${renderNav('dashboard')}
+    <div id="toast-stack"></div>
+    <div class="page-bg">
+      <div class="container">
+        <!-- Greeting -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px">
+          <div>
+            <div class="label">Student Dashboard</div>
+            <h1 style="font-size:26px;font-weight:800">Good day, ${u.name.split(' ')[0]} 👋</h1>
+          </div>
+          <button class="btn btn-primary" onclick="goto('post-auction')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            Post new skill
+          </button>
+        </div>
+
+        <!-- Stats -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:28px">
+          <div class="stat-card">
+            <div style="font-size:22px;margin-bottom:8px">💼</div>
+            <div class="stat-value" style="color:var(--indigo)">${liveA.length}</div>
+            <div class="stat-label">Live auctions</div>
+          </div>
+          <div class="stat-card">
+            <div style="font-size:22px;margin-bottom:8px">⚡</div>
+            <div class="stat-value">${totalBidsReceived}</div>
+            <div class="stat-label">Bids received</div>
+          </div>
+          <div class="stat-card">
+            <div style="font-size:22px;margin-bottom:8px">💰</div>
+            <div class="stat-value" style="color:var(--emerald)">${App.fmt(potentialEarnings)}</div>
+            <div class="stat-label">Potential earnings</div>
+          </div>
+          <div class="stat-card">
+            <div style="font-size:22px;margin-bottom:8px">✅</div>
+            <div class="stat-value">${u.completedJobs||0}</div>
+            <div class="stat-label">Completed jobs</div>
+          </div>
+          <div class="stat-card">
+            <div style="font-size:22px;margin-bottom:8px">⭐</div>
+            <div class="stat-value">${u.rating||'—'}</div>
+            <div class="stat-label">Rating</div>
+          </div>
+        </div>
+
+        <!-- Live Auctions -->
+        <div class="card" style="margin-bottom:20px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+            <h2 style="font-size:18px;font-weight:700">My Live Auctions <span class="live-pill" style="margin-left:10px"><div class="live-dot"></div>LIVE</span></h2>
+          </div>
+          ${liveA.length ? `
+            <div style="display:flex;flex-direction:column;gap:10px">
+              ${liveA.map(a=>`
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--off);border-radius:var(--radius);border:1px solid var(--border);gap:12px;flex-wrap:wrap">
+                  <div style="flex:1;min-width:200px">
+                    <div style="font-size:15px;font-weight:700;margin-bottom:2px;cursor:pointer" onclick="goto('auction-detail','${a.id}')">${a.title}</div>
+                    <div style="font-size:12px;color:var(--muted);font-family:var(--mono)">${a.bids.length} bids · ends in <span style="color:${a.timeLeft<600?'var(--red)':a.timeLeft<1800?'var(--amber)':'var(--emerald)'}" id="dash-t-${a.id}">${App.fmtTime(a.timeLeft)}</span></div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:16px">
+                    <div style="text-align:center">
+                      <div style="font-family:var(--display);font-size:18px;font-weight:800;color:var(--indigo)" id="dash-p-${a.id}">${App.fmt(a.currentBid)}</div>
+                      <div style="font-size:10px;color:var(--muted);font-family:var(--mono)">Current bid</div>
+                    </div>
+                    <button class="btn btn-outline btn-sm" onclick="goto('auction-detail','${a.id}')">View →</button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>` : `
+            <div style="text-align:center;padding:32px;color:var(--muted)">
+              <div style="font-size:32px;margin-bottom:10px">📭</div>
+              <div style="font-weight:600;margin-bottom:6px">No live auctions</div>
+              <button class="btn btn-primary btn-sm" onclick="goto('post-auction')">Post your first skill</button>
+            </div>`}
+        </div>
+
+        <!-- Past auctions -->
+        ${endedA.length ? `
+        <div class="card">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:18px">Past Auctions</h2>
+          <table class="table">
+            <thead><tr><th>Skill</th><th>Winner</th><th>Final Bid</th><th>Bids</th><th></th></tr></thead>
+            <tbody>
+              ${endedA.map(a=>{
+                const w=a.bids[0];
+                return `<tr>
+                  <td><div style="font-weight:600">${a.title}</div></td>
+                  <td>${w?`<div style="font-size:13px">${w.bidderName}</div>`:'<span style="color:var(--muted);font-size:13px">No bids</span>'}</td>
+                  <td><span style="font-family:var(--mono);font-weight:600;color:${w?'var(--emerald)':'var(--muted)'}">${w?App.fmt(w.amount):'—'}</span></td>
+                  <td><span style="font-family:var(--mono)">${a.bids.length}</span></td>
+                  <td><button class="btn btn-ghost btn-xs" onclick="goto('auction-detail','${a.id}')">Details</button></td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>` : ''}
+      </div>
+    </div>
+    ${renderFooter()}
+  `;
+}
+
+// ── POST AUCTION PAGE ──────────────────────────────────────
+function renderPostAuction() {
+  const u = App.state.currentUser;
+  if (!u) { goto('login'); return ''; }
+  if (u.role!=='student') { toast('Only students can post auctions','error'); goto('auctions'); return ''; }
+
+  const cats = ['design','dev','video','writing','photo'];
+  const catLabels = {design:'Graphic Design',dev:'Web / App Development',video:'Video & Media',writing:'Writing & Research',photo:'Photography & Photo Editing'};
+  const suggestedTags = {
+    design:['Logo','Branding','UI/UX','Illustrator','Figma','Canva','Print'],
+    dev:['React','WordPress','Android','Node.js','Python','Firebase','SEO'],
+    video:['YouTube','After Effects','DaVinci','Motion Graphics','Thumbnail'],
+    writing:['Business Plan','Copywriting','SEO Content','Research','Translation'],
+    photo:['Product Photo','Lightroom','Photoshop','E-commerce','Background Remove'],
+  };
+
+  return `
+    ${renderNav('')}
+    <div id="toast-stack"></div>
+    <div class="page-bg">
+      <div class="container" style="max-width:680px">
+        <button class="btn btn-ghost btn-sm" style="margin-bottom:16px" onclick="goto('dashboard')">← Back to dashboard</button>
+        <div class="label">New Auction</div>
+        <h1 style="font-size:26px;font-weight:800;margin-bottom:24px">Post your skill</h1>
+
+        <div class="card">
+          <div class="form-group">
+            <label class="form-label">Auction title *</label>
+            <input class="form-input" id="pa-title" placeholder="e.g. I will design your brand logo with 3 concepts">
+            <div class="form-hint">Be specific about what you'll deliver</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Skill category *</label>
+            <select class="form-select" id="pa-cat" onchange="updateTagSuggestions(this.value)">
+              <option value="">Select category…</option>
+              ${cats.map(c=>`<option value="${c}">${catLabels[c]}</option>`).join('')}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Tags <span style="color:var(--muted);font-weight:400">(click to add)</span></label>
+            <div class="chip-group" id="tag-suggestions" style="margin-bottom:8px">
+              <span style="font-size:13px;color:var(--muted)">Select a category first</span>
+            </div>
+            <input class="form-input" id="pa-tags-input" placeholder="Or type a custom tag and press Enter" onkeydown="addCustomTag(event)">
+            <div id="pa-selected-tags" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Describe exactly what you'll deliver *</label>
+            <textarea class="form-input" id="pa-desc" style="min-height:110px" placeholder="Be precise: how many concepts, what files will you deliver, how many revisions included, what info do you need from the buyer?"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Starting bid (Rs.) *</label>
+              <input class="form-input" type="number" id="pa-start" placeholder="1000" min="200">
+              <div class="form-hint">Minimum Rs. 200</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Delivery time</label>
+              <select class="form-select" id="pa-delivery">
+                <option value="1">1 day</option>
+                <option value="2">2 days</option>
+                <option value="3" selected>3 days</option>
+                <option value="5">5 days</option>
+                <option value="7">7 days</option>
+                <option value="10">10 days</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Auction duration</label>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px" id="dur-opts">
+              ${[{v:'60',l:'1 hour'},{v:'120',l:'2 hours',def:true},{v:'180',l:'3 hours'},{v:'360',l:'6 hours'},{v:'720',l:'12 hours'},{v:'1440',l:'24 hours'}].map(d=>`
+                <div onclick="selectDur('${d.v}',this)" id="dur-${d.v}" style="padding:10px;border:2px solid ${d.def?'var(--indigo)':'var(--border)'};border-radius:var(--radius);text-align:center;cursor:pointer;font-size:13px;font-weight:${d.def?'600':'400'};background:${d.def?'var(--indigo-light)':''}; color:${d.def?'var(--indigo)':'var(--text2)'}">${d.l}</div>
+              `).join('')}
+            </div>
+          </div>
+
+          <div style="padding:14px;background:var(--off);border-radius:var(--radius);margin-bottom:20px;font-size:13px;color:var(--muted)">
+            <b style="color:var(--text)">Remember:</b> SkillBid takes 12% from the winning bid. You keep 88%. Payment is held in escrow and released when the buyer approves your delivery.
+          </div>
+
+          <div style="display:flex;gap:10px;justify-content:flex-end">
+            <button class="btn btn-outline" onclick="goto('dashboard')">Cancel</button>
+            <button class="btn btn-primary" onclick="submitPostAuction()">
+              Launch auction →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    ${renderFooter()}
+  `;
+}
+
+let _selectedTags=[], _selectedDur='120';
+const _allTagSuggestions = {
+  design:['Logo','Branding','UI/UX','Illustrator','Figma','Canva','Print Design','Infographic'],
+  dev:['React','WordPress','Android','Node.js','Python','Firebase','SEO','PHP','Flutter'],
+  video:['YouTube','After Effects','DaVinci','Motion Graphics','Thumbnail','Reels','Short Video'],
+  writing:['Business Plan','Copywriting','SEO Content','Research','Translation','Blog','Proposal'],
+  photo:['Product Photo','Lightroom','Photoshop','E-commerce','Background Remove','Portrait'],
+};
+function updateTagSuggestions(cat) {
+  _selectedTags=[];
+  const el=document.getElementById('pa-selected-tags');if(el)el.innerHTML='';
+  const sg=document.getElementById('tag-suggestions');if(!sg)return;
+  const tags=_allTagSuggestions[cat]||[];
+  sg.innerHTML=tags.map(t=>`<span class="chip" onclick="toggleTag('${t}',this)">${t}</span>`).join('');
+}
+function toggleTag(t,el) {
+  if(el.classList.contains('active')){_selectedTags=_selectedTags.filter(x=>x!==t);el.classList.remove('active');}
+  else if(_selectedTags.length<5){_selectedTags.push(t);el.classList.add('active');}
+  else toast('Max 5 tags','warning');
+}
+function addCustomTag(e) {
+  if(e.key!=='Enter')return;
+  const inp=document.getElementById('pa-tags-input');const val=inp.value.trim();
+  if(val&&_selectedTags.length<5&&!_selectedTags.includes(val)){
+    _selectedTags.push(val);inp.value='';
+    const box=document.getElementById('pa-selected-tags');
+    if(box)box.innerHTML=_selectedTags.map(t=>`<span class="badge badge-indigo">${t} <span style="cursor:pointer;margin-left:4px" onclick="removeTag('${t}')">×</span></span>`).join('');
+  }
+}
+function removeTag(t){_selectedTags=_selectedTags.filter(x=>x!==t);document.getElementById('pa-selected-tags').innerHTML=_selectedTags.map(t=>`<span class="badge badge-indigo">${t} <span style="cursor:pointer;margin-left:4px" onclick="removeTag('${t}')">×</span></span>`).join('');}
+function selectDur(v,el){
+  _selectedDur=v;
+  document.querySelectorAll('#dur-opts>div').forEach(d=>{
+    d.style.border='2px solid var(--border)';d.style.background='';d.style.color='var(--text2)';d.style.fontWeight='400';
+  });
+  el.style.border='2px solid var(--indigo)';el.style.background='var(--indigo-light)';el.style.color='var(--indigo)';el.style.fontWeight='600';
+}
+function submitPostAuction() {
+  const title=document.getElementById('pa-title')?.value?.trim();
+  const cat=document.getElementById('pa-cat')?.value;
+  const desc=document.getElementById('pa-desc')?.value?.trim();
+  const start=document.getElementById('pa-start')?.value;
+  const delivery=document.getElementById('pa-delivery')?.value;
+  if(!title||!cat||!desc||!start){toast('Please fill in all required fields','error');return;}
+  if(parseInt(start)<200){toast('Minimum starting bid is Rs. 200','error');return;}
+  const tags=[..._selectedTags];
+  const r=App.createAuction({title,category:cat,desc,startBid:start,tags,duration:_selectedDur,deliveryDays:delivery});
+  if(r.ok){
+    toast('Your auction is live! 🚀','success');
+    _selectedTags=[];_selectedDur='120';
+    goto('auction-detail',r.auction.id);
+  } else toast(r.msg,'error');
+}
+
+// ── MY BIDS (BUYER) ────────────────────────────────────────
+function renderMyBids() {
+  const u = App.state.currentUser;
+  if (!u) { goto('login'); return ''; }
+  const myBids = App.getUserBids(u.id);
+  // Deduplicate by auction (keep highest bid)
+  const auctionBids = {};
+  myBids.forEach(b=>{ if(!auctionBids[b.auctionId]||b.amount>auctionBids[b.auctionId].amount) auctionBids[b.auctionId]=b; });
+  const bids = Object.values(auctionBids);
+
+  return `
+    ${renderNav('my-bids')}
+    <div id="toast-stack"></div>
+    <div class="page-bg">
+      <div class="container">
+        <div style="margin-bottom:24px">
+          <div class="label">Buyer Dashboard</div>
+          <h1 style="font-size:26px;font-weight:800">My Bids</h1>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px">
+          <div class="stat-card"><div style="font-size:22px;margin-bottom:8px">⚡</div><div class="stat-value">${bids.length}</div><div class="stat-label">Auctions bid on</div></div>
+          <div class="stat-card"><div style="font-size:22px;margin-bottom:8px">🏆</div><div class="stat-value" style="color:var(--emerald)">${bids.filter(b=>b.auction?.status==='ended'&&b.auction?.bids?.[0]?.bidderId===u.id).length}</div><div class="stat-label">Auctions won</div></div>
+          <div class="stat-card"><div style="font-size:22px;margin-bottom:8px">⏳</div><div class="stat-value" style="color:var(--amber)">${bids.filter(b=>b.auction?.status==='live').length}</div><div class="stat-label">Active bids</div></div>
+        </div>
+        ${bids.length ? `
+          <div class="card">
+            <table class="table">
+              <thead><tr><th>Auction</th><th>Student</th><th>My bid</th><th>Current</th><th>Status</th><th></th></tr></thead>
+              <tbody>
+              ${bids.map(b=>{
+                const a=b.auction; if(!a) return '';
+                const topBid=a.bids?.[0];
+                const isWinning=topBid?.bidderId===u.id;
+                const ended=a.status==='ended';
+                const student=App.getUser(a.studentId);
+                return `<tr>
+                  <td><div style="font-weight:600;max-width:220px">${a.title}</div></td>
+                  <td><div style="font-size:13px">${student?.name||'—'}</div></td>
+                  <td><span style="font-family:var(--mono);font-weight:600">${App.fmt(b.amount)}</span></td>
+                  <td><span style="font-family:var(--mono);color:var(--indigo)">${App.fmt(a.currentBid)}</span></td>
+                  <td>${ended?(isWinning?'<span class="badge badge-emerald">🏆 Won</span>':'<span class="badge badge-gray">Outbid</span>'):(isWinning?'<span class="badge badge-emerald">Leading</span>':'<span class="badge badge-amber">Outbid</span>')}</td>
+                  <td><button class="btn btn-ghost btn-xs" onclick="goto('auction-detail','${a.id}')">View</button></td>
+                </tr>`;
+              }).join('')}
+              </tbody>
+            </table>
+          </div>` : `
+          <div class="empty-state">
+            <div class="empty-state-icon">🔍</div>
+            <h3>No bids yet</h3>
+            <p>Browse live auctions and place your first bid</p>
+            <button class="btn btn-primary btn-sm" style="margin-top:16px" onclick="goto('auctions')">Browse auctions</button>
+          </div>`}
+      </div>
+    </div>
+    ${renderFooter()}
+  `;
+}
+
+// ── PROFILE VIEW ───────────────────────────────────────────
+function renderProfileView(userId) {
+  const user = App.getUser(userId);
+  if (!user) return `${renderNav('')}<div class="page-bg"><div class="container"><p>User not found</p></div></div>`;
+  const auctions = App.getAuctions({studentId:userId});
+  const liveA = auctions.filter(a=>a.status==='live');
+  const endedA = auctions.filter(a=>a.status==='ended'&&a.bids.length>0);
+  const c = App.pickColor(user.name);
+
+  return `
+    ${renderNav('')}
+    <div id="toast-stack"></div>
+    <div class="page-bg">
+      <div class="container">
+        <div style="display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start">
+          <!-- Profile sidebar -->
+          <div>
+            <div class="card" style="margin-bottom:16px">
+              <div style="text-align:center;padding:8px 0 20px;border-bottom:1px solid var(--border);margin-bottom:20px">
+                <div class="avatar av-88" style="background:${c.bg};color:${c.fg};margin:0 auto 14px">${App.initials(user.name)}</div>
+                <div style="font-size:20px;font-weight:800;margin-bottom:3px">${user.name}</div>
+                <div style="font-size:13px;color:var(--muted)">${user.university||user.company||''}</div>
+                ${user.rating?`<div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:8px"><span style="color:var(--amber)">★</span><span style="font-weight:700">${user.rating}</span><span style="font-size:12px;color:var(--muted)">(${user.completedJobs} reviews)</span></div>`:''}
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                ${user.bio?`<p style="font-size:13px;color:var(--text2);line-height:1.6">${user.bio}</p>`:''}
+                ${user.skills?.length?`<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px">${user.skills.map(s=>`<span class="badge badge-indigo">${s}</span>`).join('')}</div>`:''}
+                <div class="divider" style="margin:8px 0"></div>
+                <div style="font-size:12px;color:var(--muted);font-family:var(--mono)">Joined ${user.joinedAt||'2025'}</div>
+              </div>
+            </div>
+            <div class="card">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <div style="text-align:center;padding:12px;background:var(--off);border-radius:var(--radius-sm)">
+                  <div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--indigo)">${user.completedJobs||0}</div>
+                  <div style="font-size:11px;color:var(--muted);font-family:var(--mono)">Jobs done</div>
+                </div>
+                <div style="text-align:center;padding:12px;background:var(--off);border-radius:var(--radius-sm)">
+                  <div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--emerald)">${user.totalEarned?'Rs.'+Math.round(user.totalEarned/1000)+'K':'—'}</div>
+                  <div style="font-size:11px;color:var(--muted);font-family:var(--mono)">Earned</div>
+                </div>
+              </div>
+              ${App.state.currentUser&&App.state.currentUser.id!==userId?`<button class="btn btn-outline btn-block btn-sm" style="margin-top:14px" onclick="goto('messages')">Send message</button>`:''}
+            </div>
+          </div>
+
+          <!-- Right col -->
+          <div>
+            ${liveA.length?`
+            <div style="margin-bottom:20px">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px">
+                <h2 style="font-size:18px;font-weight:700">Live Auctions <span class="live-pill" style="margin-left:10px"><div class="live-dot"></div>LIVE</span></h2>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px">
+                ${liveA.map(a=>renderAuctionCard(a)).join('')}
+              </div>
+            </div>` : ''}
+            ${endedA.length?`
+            <div>
+              <h2 style="font-size:18px;font-weight:700;margin-bottom:14px">Past Work</h2>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                ${endedA.slice(0,6).map(a=>{
+                  const w=a.bids[0];
+                  return `<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);gap:12px;cursor:pointer" onclick="goto('auction-detail','${a.id}')">
+                    <div><div style="font-weight:600;font-size:14px">${a.title}</div><div style="font-size:12px;color:var(--muted);margin-top:2px">${w?`${w.bidderName} · ${a.bids.length} bids`:'No bids'}</div></div>
+                    <div style="text-align:right">${w?`<div style="font-family:var(--mono);font-weight:700;color:var(--emerald)">${App.fmt(w.amount)}</div>`:'<span style="color:var(--muted);font-size:13px">—</span>'}</div>
+                  </div>`;
+                }).join('')}
+              </div>
+            </div>` : ''}
+          </div>
+        </div>
+      </div>
+    </div>
+    ${renderFooter()}
+  `;
+}
+
+// ── MY PROFILE (edit) ──────────────────────────────────────
+function renderProfile() {
+  const u = App.state.currentUser;
+  if (!u) { goto('login'); return ''; }
+  return `
+    ${renderNav('profile')}
+    <div id="toast-stack"></div>
+    <div class="page-bg">
+      <div class="container" style="max-width:680px">
+        <h1 style="font-size:26px;font-weight:800;margin-bottom:24px">My Profile</h1>
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)">
+            ${App.avatar(u.name,'av-64')}
+            <div>
+              <div style="font-size:18px;font-weight:800">${u.name}</div>
+              <div style="font-size:13px;color:var(--muted)">${u.email}</div>
+              <span class="badge ${u.role==='student'?'badge-indigo':'badge-emerald'}" style="margin-top:6px">${u.role==='student'?'Student':'Business'}</span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Full name</label>
+              <input class="form-input" id="prof-name" value="${u.name||''}">
+            </div>
+            <div class="form-group">
+              <label class="form-label">${u.role==='student'?'University':'Company'}</label>
+              <input class="form-input" id="prof-org" value="${u.university||u.company||''}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Bio</label>
+            <textarea class="form-input" id="prof-bio">${u.bio||''}</textarea>
+          </div>
+          ${u.role==='student'?`
+          <div class="form-group">
+            <label class="form-label">Skills <span style="color:var(--muted);font-weight:400">(comma separated)</span></label>
+            <input class="form-input" id="prof-skills" value="${(u.skills||[]).join(', ')}">
+          </div>`:''}
+          <div style="display:flex;gap:10px;justify-content:flex-end">
+            <button class="btn btn-outline" onclick="goto('dashboard')">Cancel</button>
+            <button class="btn btn-primary" onclick="saveProfile()">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    ${renderFooter()}
+  `;
+}
+function saveProfile() {
+  const u=App.state.currentUser;
+  const data={
+    name:document.getElementById('prof-name')?.value?.trim()||u.name,
+    bio:document.getElementById('prof-bio')?.value?.trim(),
+  };
+  const org=document.getElementById('prof-org')?.value?.trim();
+  if(u.role==='student'){data.university=org;const sk=document.getElementById('prof-skills')?.value;data.skills=sk?sk.split(',').map(s=>s.trim()).filter(Boolean):u.skills;}
+  else data.company=org;
+  App.updateProfile(data);
+  toast('Profile updated!','success');
+  goto(u.role==='student'?'dashboard':'my-bids');
+}
+
+// ── MESSAGES ──────────────────────────────────────────────
+function renderMessages() {
+  const u = App.state.currentUser;
+  if (!u) { goto('login'); return ''; }
+  App.markRead(u.id);
+  const msgs = App.getMessages(u.id);
+
+  // Group by conversation partner
+  const convMap = {};
+  msgs.forEach(m=>{
+    const otherId=m.fromId===u.id?m.toId:m.fromId;
+    if(!convMap[otherId]) convMap[otherId]={otherId,msgs:[],lastAt:0};
+    convMap[otherId].msgs.push(m);
+    if(m.at>convMap[otherId].lastAt) convMap[otherId].lastAt=m.at;
+  });
+  const convs = Object.values(convMap).sort((a,b)=>b.lastAt-a.lastAt);
+
+  const [selectedConvId, setSelectedConv] = [window._selectedConv||convs[0]?.otherId, id=>{window._selectedConv=id;}];
+  const selectedConv = convs.find(c=>c.otherId===selectedConvId);
+  const other = selectedConvId ? App.getUser(selectedConvId) : null;
+
+  return `
+    ${renderNav('messages')}
+    <div id="toast-stack"></div>
+    <div class="page-bg">
+      <div class="container">
+        <h1 style="font-size:26px;font-weight:800;margin-bottom:20px">Messages</h1>
+        <div style="display:grid;grid-template-columns:280px 1fr;gap:16px;height:600px">
+
+          <!-- Conversations list -->
+          <div class="card" style="padding:0;overflow:hidden;display:flex;flex-direction:column">
+            <div style="padding:14px 16px;border-bottom:1px solid var(--border);font-weight:700;font-size:14px">Conversations</div>
+            <div style="flex:1;overflow-y:auto">
+              ${convs.length ? convs.map(c=>{
+                const other2=App.getUser(c.otherId);
+                const lastMsg=c.msgs.sort((a,b)=>b.at-a.at)[0];
+                const isActive=c.otherId===selectedConvId;
+                return `<div onclick="selectConv('${c.otherId}')" style="padding:12px 16px;cursor:pointer;background:${isActive?'var(--indigo-light)':''};border-left:3px solid ${isActive?'var(--indigo)':'transparent'};transition:background 0.15s;display:flex;gap:10px;align-items:center">
+                  ${App.avatar(other2?.name||'?','av-40')}
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:14px;font-weight:600;color:${isActive?'var(--indigo)':'var(--text)'}">${other2?.name||'Unknown'}</div>
+                    <div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${lastMsg?.text||''}</div>
+                  </div>
+                </div>`;
+              }).join('') : `<div style="padding:32px;text-align:center;color:var(--muted);font-size:13px">No conversations yet</div>`}
+            </div>
+          </div>
+
+          <!-- Chat window -->
+          <div class="card" style="padding:0;overflow:hidden;display:flex;flex-direction:column">
+            ${other ? `
+              <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px">
+                ${App.avatar(other.name,'av-40')}
+                <div><div style="font-weight:700">${other.name}</div><div style="font-size:12px;color:var(--muted)">${other.university||other.company||''}</div></div>
+              </div>
+              <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px" id="chat-msgs">
+                ${selectedConv?.msgs.sort((a,b)=>a.at-b.at).map(m=>{
+                  const isMe=m.fromId===u.id;
+                  return `<div style="display:flex;justify-content:${isMe?'flex-end':'flex-start'}">
+                    <div style="max-width:75%;padding:10px 14px;border-radius:12px;background:${isMe?'var(--indigo)':'var(--off)'};color:${isMe?'#fff':'var(--text)'};font-size:13px;line-height:1.5">
+                      ${m.text}
+                      <div style="font-size:10px;opacity:0.65;margin-top:4px;font-family:var(--mono)">${App.timeAgo(m.at)}</div>
+                    </div>
+                  </div>`;
+                }).join('')||'<div style="text-align:center;color:var(--muted);font-size:13px;margin:auto">Start the conversation</div>'}
+              </div>
+              <div style="padding:14px 16px;border-top:1px solid var(--border);display:flex;gap:10px">
+                <input class="form-input" id="msg-input" placeholder="Type a message…" onkeydown="if(event.key==='Enter')sendMsg('${selectedConvId}')">
+                <button class="btn btn-primary btn-sm" onclick="sendMsg('${selectedConvId}')">Send</button>
+              </div>
+            ` : `<div style="display:flex;align-items:center;justify-content:center;flex:1;color:var(--muted)">Select a conversation</div>`}
+          </div>
+        </div>
+      </div>
+    </div>
+    ${renderFooter()}
+  `;
+}
+function selectConv(id){window._selectedConv=id;goto('messages');}
+function sendMsg(toId) {
+  const inp=document.getElementById('msg-input');const text=inp?.value?.trim();
+  if(!text||!toId)return;
+  App.sendMessage(toId,text);inp.value='';
+  goto('messages');
+}
+
+// ── LEADERBOARD ────────────────────────────────────────────
+function renderLeaderboard() {
+  const students = App.state.users.filter(u=>u.role==='student').sort((a,b)=>(b.totalEarned||0)-(a.totalEarned||0));
+  return `
+    ${renderNav('leaderboard')}
+    <div id="toast-stack"></div>
+    <div class="page-bg">
+      <div class="container">
+        <div style="margin-bottom:28px">
+          <div class="label">Rankings</div>
+          <h1 style="font-size:28px;font-weight:800">Top Earners</h1>
+          <p style="color:var(--muted);font-size:14px;margin-top:4px">Best performing students this month</p>
+        </div>
+        <div class="card" style="overflow:hidden">
+          <table class="table">
+            <thead><tr><th>#</th><th>Student</th><th>University</th><th>Skills</th><th>Jobs</th><th>Rating</th><th>Total Earned</th><th></th></tr></thead>
+            <tbody>
+              ${students.map((s,i)=>{
+                const c=App.pickColor(s.name);
+                const medals=['🥇','🥈','🥉'];
+                return `<tr>
+                  <td><div style="font-family:var(--display);font-size:18px;font-weight:800;color:${i<3?'var(--amber)':'var(--muted)'}">${medals[i]||i+1}</div></td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;cursor:pointer" onclick="goto('profile-view','${s.id}')">
+                      <div class="avatar av-40" style="background:${c.bg};color:${c.fg}">${App.initials(s.name)}</div>
+                      <div><div style="font-weight:700;font-size:14px">${s.name}</div><div style="font-size:12px;color:var(--muted)">Member since ${s.joinedAt||'2025'}</div></div>
+                    </div>
+                  </td>
+                  <td style="font-size:13px;color:var(--text2)">${s.university||'—'}</td>
+                  <td><div style="display:flex;gap:4px;flex-wrap:wrap">${(s.skills||[]).slice(0,2).map(sk=>`<span class="badge badge-indigo">${sk}</span>`).join('')}</div></td>
+                  <td><span style="font-family:var(--mono);font-weight:600">${s.completedJobs||0}</span></td>
+                  <td><span style="color:var(--amber)">★</span> <span style="font-weight:600">${s.rating||'—'}</span></td>
+                  <td><span style="font-family:var(--display);font-size:16px;font-weight:800;color:var(--emerald)">${s.totalEarned?App.fmt(s.totalEarned):'—'}</span></td>
+                  <td><button class="btn btn-ghost btn-xs" onclick="goto('profile-view','${s.id}')">View →</button></td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    ${renderFooter()}
+  `;
+}
+
+// ── SETTINGS ──────────────────────────────────────────────
+function renderSettings() {
+  const u = App.state.currentUser;
+  if (!u) { goto('login'); return ''; }
+  return `
+    ${renderNav('settings')}
+    <div id="toast-stack"></div>
+    <div class="page-bg">
+      <div class="container" style="max-width:600px">
+        <h1 style="font-size:26px;font-weight:800;margin-bottom:24px">Settings</h1>
+        <div class="card" style="margin-bottom:16px">
+          <h3 style="font-size:16px;font-weight:700;margin-bottom:16px">Account Information</h3>
+          <div class="form-group"><label class="form-label">Email address</label><input class="form-input" value="${u.email}" disabled style="background:var(--off);color:var(--muted)"></div>
+          <div class="form-group"><label class="form-label">Account type</label><input class="form-input" value="${u.role==='student'?'Student (can post & earn)':'Business (can bid & hire)'}" disabled style="background:var(--off);color:var(--muted)"></div>
+          <div class="form-group">
+            <label class="form-label">Change password</label>
+            <input class="form-input" type="password" id="new-pass" placeholder="New password (min 6 chars)">
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="changePass()">Update password</button>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 style="font-size:16px;font-weight:700;margin-bottom:4px">Notifications</h3>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Coming soon — WhatsApp & email bid alerts</p>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            ${[['New bid on my auction','Email + WhatsApp'],['Auction ending soon','WhatsApp'],['Auction won','Email + WhatsApp'],['New message','WhatsApp']].map(([l,m])=>`
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:14px">
+                <div><div style="font-weight:500">${l}</div><div style="font-size:12px;color:var(--muted)">${m}</div></div>
+                <div style="width:40px;height:22px;background:var(--indigo);border-radius:11px;position:relative;cursor:pointer"><div style="position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff"></div></div>
+              </div>`).join('<div class="divider" style="margin:0"></div>')}
+          </div>
+        </div>
+        <div class="card" style="border-color:var(--red-light)">
+          <h3 style="font-size:16px;font-weight:700;color:var(--red);margin-bottom:8px">Danger Zone</h3>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Permanently delete your account and all data.</p>
+          <button class="btn btn-danger btn-sm" onclick="toast('Account deletion would require email confirmation in production','warning')">Delete account</button>
+        </div>
+      </div>
+    </div>
+    ${renderFooter()}
+  `;
+}
+function changePass(){
+  const p=document.getElementById('new-pass')?.value;
+  if(!p||p.length<6){toast('Password must be at least 6 characters','error');return;}
+  App.updateProfile({password:p});
+  toast('Password updated!','success');
+  document.getElementById('new-pass').value='';
+}
+
+// ── HOW IT WORKS ───────────────────────────────────────────
+function renderHow() {
+  return `
+    ${renderNav('how')}
+    <div id="toast-stack"></div>
+    <section style="padding:calc(var(--nav-h)+56px) 0 60px;background:var(--white)">
+      <div class="container" style="max-width:860px">
+        <div style="text-align:center;margin-bottom:48px">
+          <div class="label" style="justify-content:center;display:flex;margin-bottom:12px">How SkillBid Works</div>
+          <h1 style="font-size:42px;font-weight:800;letter-spacing:-1px;margin-bottom:14px">The smartest way to<br>sell your skills</h1>
+          <p style="font-size:17px;color:var(--muted);line-height:1.7">Unlike fixed-price freelance sites, SkillBid runs live auctions. Competitive bidding means you always earn market rate — not a race to the bottom.</p>
+        </div>
+        ${[
+          {n:'01',icon:'🎓',title:'Create your free account',desc:'Sign up as a student in 60 seconds. Add your name, university, and the skills you want to sell. No portfolio required to start.'},
+          {n:'02',icon:'📋',title:'Post your skill as an auction',desc:'Write what you\'ll deliver, set a minimum bid (as low as Rs. 200), choose your auction duration (1–24 hours), and go live instantly. Completely free.'},
+          {n:'03',icon:'⚡',title:'Businesses bid in real-time',desc:'Your auction appears on the live marketplace. Companies and entrepreneurs place competitive bids. Each bid must be 10% higher than the last, driving your price up.'},
+          {n:'04',icon:'🤝',title:'Connect with the winner',desc:'When your auction ends, SkillBid connects you with the highest bidder. You get their brief, they get your contact. Agree on details via our built-in messaging.'},
+          {n:'05',icon:'✅',title:'Deliver your work',desc:'Complete the project within your promised timeline. The buyer reviews and approves. Our escrow system holds funds safely throughout.'},
+          {n:'06',icon:'💸',title:'Get paid fast',desc:'Once the buyer approves your delivery, payment is released instantly via JazzCash, Easypaisa, or bank transfer. You keep 88%. SkillBid takes 12%.'},
+        ].map(s=>`
+          <div style="display:flex;gap:24px;margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid var(--border)">
+            <div style="font-family:var(--display);font-size:48px;font-weight:800;color:var(--border2);flex-shrink:0;line-height:1;width:60px">${s.n}</div>
+            <div>
+              <div style="font-size:22px;margin-bottom:4px">${s.icon}</div>
+              <h3 style="font-size:18px;font-weight:700;margin-bottom:8px">${s.title}</h3>
+              <p style="font-size:15px;color:var(--text2);line-height:1.7">${s.desc}</p>
+            </div>
+          </div>`).join('')}
+        <div style="text-align:center;padding-top:16px">
+          <button class="btn btn-primary btn-lg" onclick="goto('register')">Start earning today — free</button>
+        </div>
+      </div>
+    </section>
+    ${renderFooter()}
+  `;
+}
+
+// ── HELPERS ─────────────────────────────────────────────
+function setErr(id,msg){const el=document.getElementById(id);if(el){el.textContent=msg;el.classList.add('show');}}
+
+</script>
+<script>
+
+// ═══════════════════════════════════════════════
+// ROUTER
+// ═══════════════════════════════════════════════
+
+const ROUTES = {
+  home:           () => renderHome(),
+  auctions:       (_, opts) => renderAuctions(opts?.cat||'all', opts?.q||''),
+  'auction-detail': (id) => renderAuctionDetail(id),
+  login:          () => renderLogin(),
+  register:       () => renderRegister(),
+  dashboard:      () => renderDashboard(),
+  'post-auction': () => renderPostAuction(),
+  'my-bids':      () => renderMyBids(),
+  'profile-view': (id) => renderProfileView(id),
+  profile:        () => renderProfile(),
+  messages:       () => renderMessages(),
+  leaderboard:    () => renderLeaderboard(),
+  settings:       () => renderSettings(),
+  how:            () => renderHow(),
+};
+
+let _currentPage = 'home';
+let _currentParam = null;
+let _currentOpts  = null;
+
+function goto(page, param, opts) {
+  // Guard auth routes
+  const authRequired = ['dashboard','post-auction','my-bids','profile','messages','settings'];
+  if (authRequired.includes(page) && !App.state.currentUser) {
+    toast('Please log in to continue', 'error');
+    page = 'login';
+    param = null; opts = null;
+  }
+
+  _currentPage  = page;
+  _currentParam = param || null;
+  _currentOpts  = opts  || null;
+  window._catFilter = opts?.cat || 'all';
+
+  const renderer = ROUTES[page];
+  if (!renderer) { console.warn('Unknown page:', page); return; }
+
+  const html = renderer(_currentParam, _currentOpts);
+  if (html === undefined || html === '') return;
+
+  const app = document.getElementById('app');
+  app.style.opacity = '0';
+  app.style.transform = 'translateY(6px)';
+  app.style.transition = 'none';
+
+  requestAnimationFrame(() => {
+    app.innerHTML = html;
+    app.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+    requestAnimationFrame(() => {
+      app.style.opacity = '1';
+      app.style.transform = 'translateY(0)';
+    });
+    window.scrollTo({ top: 0, behavior: 'instant' });
+
+    // Update page title
+    const titles = {
+      home: 'SkillBid — Live Talent Auctions Pakistan',
+      auctions: 'Live Auctions — SkillBid',
+      login: 'Sign In — SkillBid',
+      register: 'Create Account — SkillBid',
+      dashboard: 'Dashboard — SkillBid',
+      'post-auction': 'Post Skill — SkillBid',
+      'my-bids': 'My Bids — SkillBid',
+      leaderboard: 'Leaderboard — SkillBid',
+      messages: 'Messages — SkillBid',
+      settings: 'Settings — SkillBid',
+      how: 'How It Works — SkillBid',
+    };
+    document.title = titles[page] || 'SkillBid';
+
+    // Scroll chat to bottom
+    const chatMsgs = document.getElementById('chat-msgs');
+    if (chatMsgs) chatMsgs.scrollTop = chatMsgs.scrollHeight;
+
+    // Update live stat on home
+    const hStat = document.getElementById('h-stat-live');
+    if (hStat) hStat.textContent = App.getAuctions({status:'live'}).length;
+  });
+}
+
+// ═══════════════════════════════════════════════
+// LIVE TIMER + SIM ENGINE
+// ═══════════════════════════════════════════════
+
+let _feedItems = [];
+const FEED_SEED = [
+  {type:'bid',name:'Tech Corp PK',   text:'bid Rs. 4,800 on Brand Identity Package'},
+  {type:'bid',name:'Creative Agency',text:'bid Rs. 7,200 on React Admin Dashboard'},
+  {type:'win',name:'Fashion House',  text:'won Product Photography — Rs. 2,400'},
+  {type:'new',name:'Usman Khalid',   text:'posted a new Motion Graphics auction'},
+  {type:'bid',name:'Malik & Sons',   text:'bid Rs. 3,200 on WordPress Website'},
+  {type:'bid',name:'StartupPK',      text:'bid Rs. 5,600 on Android App auction'},
+  {type:'win',name:'Ali Hassan',     text:'won Business Plan Writing — Rs. 3,800'},
+  {type:'new',name:'Mehwish Anwar',  text:'listed a new UI/UX Design auction'},
+  {type:'bid',name:'Media House',    text:'bid Rs. 1,900 on YouTube Video Edit'},
+  {type:'bid',name:'Digital Studio', text:'bid Rs. 4,100 on Social Media Pack'},
+  {type:'win',name:'Tech Corp PK',   text:'won React Dashboard — Rs. 8,200'},
+  {type:'new',name:'Saad Farooq',    text:'posted a new SEO & Marketing auction'},
+];
+let _feedIdx = 0;
+
+function pushFeedItem(item) {
+  const list = document.getElementById('live-feed-list');
+  if (!list) return;
+  const icons = {bid:'⚡',win:'🏆',new:'✨'};
+  const clsMap = {bid:'fi-bid',win:'fi-win',new:'fi-new'};
+  const el = document.createElement('div');
+  el.className = 'feed-item';
+  el.innerHTML = `
+    <div class="feed-icon ${clsMap[item.type]||'fi-bid'}">${icons[item.type]||'⚡'}</div>
+    <div>
+      <div class="feed-text"><b>${item.name}</b> ${item.text}</div>
+      <div class="feed-time">just now</div>
+    </div>
+  `;
+  list.insertBefore(el, list.firstChild);
+  if (list.children.length > 20) list.lastChild?.remove();
+}
+
+// Start global tick
+App.startTimers(
+  // onTick — every second
+  () => {
+    updateAllTimers();
+
+    // Update dashboard live timers
+    App.state.auctions.forEach(a => {
+      const dt = document.getElementById('dash-t-'+a.id);
+      if (dt) {
+        dt.textContent = App.fmtTime(a.timeLeft);
+        dt.style.color = a.timeLeft<600?'var(--red)':a.timeLeft<1800?'var(--amber)':'var(--emerald)';
+      }
+      const dp = document.getElementById('dash-p-'+a.id);
+      if (dp) dp.textContent = App.fmt(a.currentBid);
+
+      // Update detail page timers
+      const detTimer = document.getElementById('det-timer');
+      const detPrice = document.getElementById('det-price');
+      const detBids  = document.getElementById('det-bids');
+      const detBar   = document.getElementById('det-bar');
+      if (detTimer && _currentPage==='auction-detail') {
+        const da = App.getAuction(_currentParam);
+        if (da) {
+          detTimer.textContent = da.timeLeft<=0?'ENDED':App.fmtTime(da.timeLeft);
+          if (detPrice) detPrice.textContent = App.fmt(da.currentBid);
+          if (detBids)  detBids.textContent  = da.bids.length;
+          if (detBar)   detBar.style.width   = App.progressPct(da.timeLeft,da.maxTime)+'%';
+        }
+      }
+    });
+  },
+
+  // onSimBid — random simulated bid
+  ({auction, bidder, amount}) => {
+    // Update feed
+    const feedItem = {type:'bid', name:bidder, text:`bid ${App.fmt(amount)} on ${auction.title}`};
+    pushFeedItem(feedItem);
+
+    // Cycle through seed feed items too
+    const seed = FEED_SEED[_feedIdx % FEED_SEED.length];
+    _feedIdx++;
+    pushFeedItem(seed);
+
+    // Toast if on auctions page
+    if (_currentPage === 'auctions' || _currentPage === 'home') {
+      toast(`⚡ New bid! ${App.fmt(amount)} on "${auction.title.slice(0,30)}…"`, 'info', 3000);
+    }
+
+    // Re-render bid history if on that auction's detail page
+    if (_currentPage === 'auction-detail' && _currentParam === auction.id) {
+      const histList = document.getElementById('bid-history-list');
+      if (histList) {
+        histList.innerHTML = auction.bids.slice(0,15).map((b,i) => `
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:${i===0?'var(--indigo-light)':'var(--off)'};border-radius:var(--radius-sm);border:1px solid ${i===0?'var(--indigo-mid)':'var(--border)'}">
+            <div style="display:flex;align-items:center;gap:10px">
+              ${App.avatar(b.bidderName,'av-32')}
+              <div>
+                <div style="font-size:13px;font-weight:600;${i===0?'color:var(--indigo)':''}">${b.bidderName} ${i===0?'<span style="font-size:11px;background:var(--indigo);color:#fff;border-radius:10px;padding:1px 7px">Top bid</span>':''}</div>
+                <div style="font-size:11px;color:var(--muted);font-family:var(--mono)">${App.timeAgo(b.at)}</div>
+              </div>
+            </div>
+            <div style="font-family:var(--display);font-size:16px;font-weight:800;${i===0?'color:var(--indigo)':''}">${App.fmt(b.amount)}</div>
+          </div>
+        `).join('');
+      }
+    }
+  }
+);
+
+// ═══════════════════════════════════════════════
+// LIVE FEED PAGE (standalone section on home)
+// ═══════════════════════════════════════════════
+
+// Inject live feed section into home after render
+function injectLiveFeed() {
+  // Only inject if not already present and we're on home
+  if (_currentPage !== 'home') return;
+  const existing = document.getElementById('live-feed-section');
+  if (existing) return;
+
+  const cta = document.querySelector('section[style*="background:var(--indigo)"]');
+  if (!cta) return;
+
+  const section = document.createElement('section');
+  section.id = 'live-feed-section';
+  section.style.cssText = 'padding:52px 0;background:var(--white);border-bottom:1px solid var(--border)';
+  section.innerHTML = `
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start">
+        <div>
+          <div class="label">Leaderboard</div>
+          <h2 style="font-size:24px;font-weight:800;margin-bottom:20px">Top Earning Students</h2>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            ${App.state.users.filter(u=>u.role==='student'&&u.totalEarned>0).sort((a,b)=>b.totalEarned-a.totalEarned).slice(0,5).map((s,i)=>{
+              const c = App.pickColor(s.name);
+              const medals = ['🥇','🥈','🥉'];
+              const pct = Math.round((s.totalEarned / 142000) * 100);
+              return `
+                <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--off);border:1px solid var(--border);border-radius:var(--radius-lg);cursor:pointer" onclick="goto('profile-view','${s.id}')">
+                  <div style="font-family:var(--display);font-size:22px;font-weight:800;width:32px;text-align:center;color:${i<3?'var(--amber)':'var(--muted)'}">${medals[i]||i+1}</div>
+                  <div class="avatar av-40" style="background:${c.bg};color:${c.fg}">${App.initials(s.name)}</div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-weight:700;font-size:14px">${s.name}</div>
+                    <div style="font-size:12px;color:var(--muted)">${s.university||''}</div>
+                    <div style="margin-top:6px;height:4px;background:var(--border);border-radius:2px;overflow:hidden">
+                      <div style="height:100%;width:${pct}%;background:var(--indigo);border-radius:2px"></div>
+                    </div>
+                  </div>
+                  <div style="text-align:right;flex-shrink:0">
+                    <div style="font-family:var(--display);font-size:16px;font-weight:800;color:var(--emerald)">${App.fmt(s.totalEarned)}</div>
+                    <div style="font-size:11px;color:var(--muted);font-family:var(--mono)">${s.completedJobs} jobs · ★${s.rating}</div>
+                  </div>
+                </div>`;
+            }).join('')}
+            <button class="btn btn-outline btn-sm" style="margin-top:8px;align-self:flex-start" onclick="goto('leaderboard')">Full leaderboard →</button>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <div>
+              <div class="label">Activity</div>
+              <h2 style="font-size:24px;font-weight:800">Live Feed</h2>
+            </div>
+            <div class="live-pill"><div class="live-dot"></div>LIVE</div>
+          </div>
+          <div style="background:var(--off);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+            <div style="max-height:420px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px" id="live-feed-list">
+              ${FEED_SEED.slice(0,6).map(f=>`
+                <div class="feed-item">
+                  <div class="feed-icon ${f.type==='bid'?'fi-bid':f.type==='win'?'fi-win':'fi-new'}">${f.type==='bid'?'⚡':f.type==='win'?'🏆':'✨'}</div>
+                  <div>
+                    <div class="feed-text"><b>${f.name}</b> ${f.text}</div>
+                    <div class="feed-time">${Math.floor(Math.random()*10)+1}m ago</div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  cta.parentNode.insertBefore(section, cta);
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+
+window.addEventListener('load', () => {
+  // Detect hash-based routing (simple)
+  const hash = window.location.hash.slice(1);
+
+  // Initial render
+  goto(hash || 'home');
+
+  // Hide loader
+  setTimeout(() => {
+    const loader = document.getElementById('page-loader');
+    if (loader) { loader.classList.add('hide'); setTimeout(()=>loader.remove(), 400); }
+
+    // Inject live feed on home
+    if (!hash || hash === 'home') injectLiveFeed();
+  }, 600);
+});
+
+// Re-inject feed when returning to home
+const _origGoto = goto;
+window.goto = function(page, param, opts) {
+  _origGoto(page, param, opts);
+  if (page === 'home') {
+    setTimeout(injectLiveFeed, 300);
+  }
+};
+
+// Back button support
+window.addEventListener('popstate', () => {
+  const hash = window.location.hash.slice(1);
+  if (hash) goto(hash);
+});
+
+// Close dropdowns on scroll
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+}, { passive: true });
+
+</script>
+</body>
+</html>
